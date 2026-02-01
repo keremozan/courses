@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Methods - Sophie Woodward</title>
+    <style>
+        :root {
+            --bg-primary: #fafafa;
+            --bg-secondary: #f2f2f2;
+            --bg-accent: #e8e8e8;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555;
+            --text-muted: #777;
+            --accent: #333;
+            --border: #ddd;
+            --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-body: 'Georgia', 'Times New Roman', serif;
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 2rem;
+            --space-lg: 4rem;
+            --space-xl: 6rem;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 18px;
+        }
+
+        [contenteditable] {
+            outline: none;
+            border-radius: 3px;
+            transition: background 0.2s;
+        }
+        [contenteditable]:hover {
+            background: rgba(0,0,0,0.03);
+        }
+        [contenteditable]:focus {
+            background: rgba(245, 230, 163, 0.3);
+        }
+
+        .slide {
+            min-height: 100vh;
+            padding: var(--space-xl) 12%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide:nth-child(even) {
+            background: var(--bg-secondary);
+        }
+
+        .slide-number {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .slide-controls {
+            position: absolute;
+            top: var(--space-md);
+            left: var(--space-md);
+            display: flex;
+            gap: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .slide:hover .slide-controls {
+            opacity: 1;
+        }
+        .slide-btn {
+            font-family: var(--font-heading);
+            font-size: 0.7rem;
+            padding: 0.3rem 0.6rem;
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: 3px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+        .slide-btn:hover {
+            background: var(--bg-accent);
+            color: var(--text-primary);
+        }
+        .slide-btn.danger:hover {
+            background: #fee;
+            border-color: #fcc;
+            color: #c00;
+        }
+        .slide-insert-dropdown { position: relative; display: inline-flex; }
+        .slide-insert-dropdown .slide-btn { display: flex; align-items: center; }
+        .slide-insert-dropdown-content {
+            display: none;
+            position: absolute;
+            top: calc(100% - 2px);
+            left: 0;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 100;
+            min-width: 150px;
+            padding-top: 4px;
+        }
+        .slide-insert-dropdown:hover .slide-insert-dropdown-content { display: block; }
+        .slide-insert-item {
+            display: block;
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            font-family: var(--font-heading);
+            font-size: 0.7rem;
+            border: none;
+            background: none;
+            text-align: left;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+        .slide-insert-item:hover { background: var(--bg-secondary); color: var(--text-primary); }
+
+        .title {
+            font-family: var(--font-body);
+            font-size: 3.5rem;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: var(--space-sm);
+        }
+
+        .subtitle {
+            font-family: var(--font-body);
+            font-size: 1.35rem;
+            color: var(--text-secondary);
+            max-width: 650px;
+            line-height: 1.5;
+        }
+
+        .section-label {
+            font-family: var(--font-heading);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            margin-bottom: var(--space-sm);
+        }
+
+        .author {
+            font-family: var(--font-heading);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: var(--space-md);
+        }
+
+        .heading {
+            font-family: var(--font-heading);
+            font-size: 1.75rem;
+            font-weight: 500;
+            margin-bottom: var(--space-md);
+        }
+
+        .statement {
+            font-family: var(--font-body);
+            font-size: 2rem;
+            line-height: 1.5;
+            max-width: 800px;
+            margin-bottom: var(--space-md);
+        }
+
+        .statement-small {
+            font-family: var(--font-body);
+            font-size: 1.6rem;
+            line-height: 1.5;
+            max-width: 800px;
+            margin-bottom: var(--space-md);
+        }
+
+        .body-text {
+            font-family: var(--font-body);
+            font-size: 1.15rem;
+            line-height: 1.7;
+            max-width: 700px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .quote {
+            font-family: var(--font-body);
+            font-size: 1.4rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            max-width: 700px;
+            padding-left: var(--space-md);
+            border-left: 2px solid var(--border);
+            margin: var(--space-md) 0;
+        }
+
+        .quote-source {
+            font-family: var(--font-heading);
+            font-style: normal;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-top: var(--space-sm);
+            display: block;
+        }
+
+        .concept {
+            background: var(--bg-accent);
+            padding: var(--space-md);
+            max-width: 700px;
+            margin: var(--space-md) 0;
+        }
+
+        .concept-title {
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: var(--space-xs);
+        }
+
+        .concept-text {
+            font-family: var(--font-body);
+            font-size: 1.15rem;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-md);
+            margin-top: var(--space-md);
+            max-width: 900px;
+        }
+
+        .example {
+            padding: var(--space-sm) 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .example-title {
+            font-family: var(--font-heading);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: var(--space-xs);
+        }
+
+        .example-text {
+            font-family: var(--font-body);
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .bullet-list {
+            list-style: disc;
+            padding-left: 1.5rem;
+            max-width: 700px;
+            margin: var(--space-sm) 0;
+        }
+        .bullet-list li {
+            margin-bottom: var(--space-xs);
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .numbered-list {
+            list-style: decimal;
+            padding-left: 1.5rem;
+            max-width: 700px;
+            margin: var(--space-sm) 0;
+        }
+        .numbered-list li {
+            margin-bottom: var(--space-sm);
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .comparison-table {
+            width: 100%;
+            max-width: 800px;
+            border-collapse: collapse;
+            margin: var(--space-md) 0;
+        }
+        .comparison-table th {
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            text-align: left;
+            padding: var(--space-sm);
+            border-bottom: 2px solid var(--border);
+        }
+        .comparison-table td {
+            padding: var(--space-sm);
+            border-bottom: 1px solid var(--border);
+            font-size: 1rem;
+            vertical-align: top;
+        }
+
+        .sources-list {
+            list-style: none;
+            font-family: var(--font-heading);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            column-count: 2;
+            column-gap: 2rem;
+        }
+        .sources-list li {
+            margin-bottom: var(--space-sm);
+            padding-left: 0;
+            break-inside: avoid;
+        }
+
+        .source-link {
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: var(--space-sm);
+        }
+
+        .image-container {
+            margin: var(--space-md) 0;
+            max-width: 320px;
+            position: relative;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .image-container:hover::after {
+            content: 'Click to replace';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            font-family: var(--font-heading);
+            font-size: 0.75rem;
+            padding: 0.5rem;
+            text-align: center;
+        }
+
+        .image-large {
+            margin: var(--space-md) 0;
+            max-width: 800px;
+            position: relative;
+        }
+
+        .image-large img {
+            width: 100%;
+            height: auto;
+            display: block;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .image-large:hover::after {
+            content: 'Click to replace';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            font-family: var(--font-heading);
+            font-size: 0.75rem;
+            padding: 0.5rem;
+            text-align: center;
+        }
+
+        .image-caption {
+            font-family: var(--font-heading);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: var(--space-xs);
+        }
+
+        .image-placeholder {
+            width: 100%;
+            aspect-ratio: 1;
+            background: var(--bg-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+            cursor: pointer;
+            border: 2px dashed var(--border);
+        }
+        .image-placeholder:hover {
+            background: var(--bg-secondary);
+            border-color: var(--text-muted);
+        }
+        .image-placeholder span {
+            font-family: var(--font-heading);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .image-placeholder-wide {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--bg-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+            cursor: pointer;
+            border: 2px dashed var(--border);
+        }
+        .image-placeholder-wide:hover {
+            background: var(--bg-secondary);
+            border-color: var(--text-muted);
+        }
+        .image-placeholder-wide span {
+            font-family: var(--font-heading);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: var(--space-lg);
+            align-items: start;
+            max-width: 1000px;
+        }
+
+        @media (max-width: 768px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hl, .hl-yellow {
+            background: linear-gradient(to top, #f5e6a3 40%, transparent 40%);
+            padding: 0 0.1em;
+        }
+        .hl-pink {
+            background: linear-gradient(to top, #f5c6d6 40%, transparent 40%);
+            padding: 0 0.1em;
+        }
+        .hl-blue {
+            background: linear-gradient(to top, #c6daf5 40%, transparent 40%);
+            padding: 0 0.1em;
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            font-family: var(--font-heading);
+        }
+
+        .toolbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 0.75rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 1000;
+            font-family: var(--font-heading);
+            flex-wrap: wrap;
+        }
+
+        .toolbar-title {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .toolbar-divider {
+            width: 1px;
+            height: 1.5rem;
+            background: var(--border);
+        }
+
+        .toolbar-btn {
+            font-family: var(--font-heading);
+            font-size: 0.75rem;
+            padding: 0.4rem 0.7rem;
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .toolbar-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .toolbar-btn.primary {
+            background: var(--text-primary);
+            color: white;
+            border-color: var(--text-primary);
+        }
+        .toolbar-btn.primary:hover {
+            background: #333;
+        }
+
+        .toolbar-spacer {
+            flex: 1;
+        }
+
+        .format-btn {
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            padding: 0.3rem 0.5rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: var(--text-muted);
+            border-radius: 3px;
+        }
+        .format-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .toolbar-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .toolbar-dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 1001;
+            min-width: 160px;
+        }
+        .toolbar-dropdown:hover .toolbar-dropdown-content {
+            display: block;
+        }
+        .toolbar-dropdown-item {
+            display: block;
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            font-family: var(--font-heading);
+            font-size: 0.75rem;
+            border: none;
+            background: none;
+            text-align: left;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+        .toolbar-dropdown-item:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .nav-hint {
+            position: fixed;
+            bottom: var(--space-md);
+            right: var(--space-md);
+            font-family: var(--font-heading);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .nav-key {
+            display: inline-block;
+            padding: 0.25rem 0.6rem;
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            background: white;
+            transition: background 0.2s;
+        }
+        .nav-key:hover {
+            background: var(--bg-accent);
+        }
+
+        .progress {
+            position: fixed;
+            top: 52px;
+            left: 0;
+            height: 2px;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.2s;
+            z-index: 999;
+        }
+
+        #imageInput {
+            display: none;
+        }
+
+        .slides-container {
+            margin-top: 52px;
+        }
+
+        @media print {
+            body { background: white; }
+            .toolbar, .nav-hint, .progress, .slide-controls, #imageInput, .lightbox { display: none !important; }
+            .slides-container { margin-top: 0; }
+            .slide {
+                min-height: 100vh;
+                height: 100vh;
+                page-break-after: always;
+                page-break-inside: avoid;
+                break-after: page;
+                break-inside: avoid;
+                padding: 8% 10%;
+                background: var(--bg-primary) !important;
+            }
+            .slide:nth-child(even) { background: var(--bg-secondary) !important; }
+            .slide:last-child { page-break-after: auto; }
+            .image-placeholder, .image-placeholder-wide { display: none; }
+            .image-container:hover::after, .image-large:hover::after { display: none; }
+            [contenteditable] { background: transparent !important; }
+            @page { size: landscape; margin: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="toolbar">
+        <span class="toolbar-title">Material Methods</span>
+        <div class="toolbar-divider"></div>
+
+        <button class="format-btn" onclick="formatText('bold')" title="Bold"><strong>B</strong></button>
+        <button class="format-btn" onclick="formatText('italic')" title="Italic"><em>I</em></button>
+        <div class="toolbar-dropdown">
+            <button class="format-btn" title="Highlight">H̲ ▾</button>
+            <div class="toolbar-dropdown-content">
+                <button class="toolbar-dropdown-item" onclick="toggleHighlight('yellow')"><span style="background: linear-gradient(to top, #f5e6a3 40%, transparent 40%); padding: 0 0.3em;">Yellow</span></button>
+                <button class="toolbar-dropdown-item" onclick="toggleHighlight('pink')"><span style="background: linear-gradient(to top, #f5c6d6 40%, transparent 40%); padding: 0 0.3em;">Pink</span></button>
+                <button class="toolbar-dropdown-item" onclick="toggleHighlight('blue')"><span style="background: linear-gradient(to top, #c6daf5 40%, transparent 40%); padding: 0 0.3em;">Blue</span></button>
+            </div>
+        </div>
+
+        <div class="toolbar-divider"></div>
+
+        <div class="toolbar-dropdown">
+            <button class="toolbar-btn">+ Add Slide ▾</button>
+            <div class="toolbar-dropdown-content">
+                <button class="toolbar-dropdown-item" onclick="addSlide('statement')">Statement</button>
+                <button class="toolbar-dropdown-item" onclick="addSlide('quote')">Quote</button>
+                <button class="toolbar-dropdown-item" onclick="addSlide('two-col')">Two Column + Image</button>
+                <button class="toolbar-dropdown-item" onclick="addSlide('big-image')">Large Image</button>
+                <button class="toolbar-dropdown-item" onclick="addSlide('bullet-list')">Bullet List</button>
+                <button class="toolbar-dropdown-item" onclick="addSlide('numbered-list')">Numbered List</button>
+                <button class="toolbar-dropdown-item" onclick="addSlide('comparison')">Comparison Table</button>
+                <button class="toolbar-dropdown-item" onclick="addSlide('concept')">Concept Box</button>
+                <button class="toolbar-dropdown-item" onclick="addSlide('examples')">Examples Grid</button>
+                <button class="toolbar-dropdown-item" onclick="addSlide('sources')">Sources</button>
+            </div>
+        </div>
+
+        <div class="toolbar-spacer"></div>
+
+        <button class="toolbar-btn" onclick="saveHTML()">Save Editable</button>
+        <button class="toolbar-btn" onclick="exportClean()">Export HTML</button>
+        <button class="toolbar-btn primary" onclick="exportPDF()">Export PDF</button>
+    </div>
+
+    <div class="progress" id="progress"></div>
+    <input type="file" id="imageInput" accept="image/*">
+
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">×</span>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
+    <div class="slides-container">
+        <!-- SLIDE 1: Title -->
+        <div class="slide" id="slide-1">
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="moveSlide(this, -1)">↑</button>
+                <button class="slide-btn" onclick="moveSlide(this, 1)">↓</button>
+                <div class="slide-insert-dropdown">
+                    <button class="slide-btn">+ Insert ▾</button>
+                    <div class="slide-insert-dropdown-content">
+                        <button class="slide-insert-item" onclick="insertElement(this, 'image')">Image (→ two-col)</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'quote')">Quote</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'bullet-list')">Bullet List</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'concept')">Concept Box</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'body-text')">Body Text</button>
+                    </div>
+                </div>
+                <button class="slide-btn" onclick="duplicateSlide(this)">Duplicate</button>
+                <button class="slide-btn danger" onclick="deleteSlide(this)">Delete</button>
+            </div>
+            <p class="section-label" contenteditable="true">Notes from Sophie Woodward's</p>
+            <h1 class="title" contenteditable="true">Material Methods</h1>
+            <p class="subtitle" contenteditable="true">How to orient yourself to things in research, and why the question of what things are turns out to be surprisingly difficult</p>
+            <p class="author" contenteditable="true">Kerem Ozan Bayraktar · February 2026</p>
+            <p class="source-link" contenteditable="true">From "Material Methods: Researching and Thinking with Things" (Sage Research Methods, 2022)</p>
+        </div>
+
+        <!-- SLIDE 2: Context - The Humility of Things -->
+        <div class="slide" id="slide-2">
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="moveSlide(this, -1)">↑</button>
+                <button class="slide-btn" onclick="moveSlide(this, 1)">↓</button>
+                <div class="slide-insert-dropdown">
+                    <button class="slide-btn">+ Insert ▾</button>
+                    <div class="slide-insert-dropdown-content">
+                        <button class="slide-insert-item" onclick="insertElement(this, 'image')">Image (→ two-col)</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'quote')">Quote</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'bullet-list')">Bullet List</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'concept')">Concept Box</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'body-text')">Body Text</button>
+                    </div>
+                </div>
+                <button class="slide-btn" onclick="duplicateSlide(this)">Duplicate</button>
+                <button class="slide-btn danger" onclick="deleteSlide(this)">Delete</button>
+            </div>
+            <span class="slide-number">01</span>
+            <p class="statement" contenteditable="true">Most social science research centers human experiences. We ask people about their meanings, opinions, memories. But the things that frame everyday life often <span class="hl">disappear from view</span>.</p>
+            <div class="concept">
+                <p class="concept-title" contenteditable="true">The Humility of Things</p>
+                <p class="concept-text" contenteditable="true">Daniel Miller (1987) uses this phrase to describe how objects shape actions and social relations while remaining unnoticed. A chair invites sitting. A door requires opening. We move through environments structured by things without consciously registering them.</p>
+            </div>
+            <p class="body-text" contenteditable="true">If you want to research material culture, you first need to confront a question that seems simple but turns out to be philosophically complicated.</p>
+        </div>
+
+        <!-- SLIDE 3: The Question -->
+        <div class="slide" id="slide-3">
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="moveSlide(this, -1)">↑</button>
+                <button class="slide-btn" onclick="moveSlide(this, 1)">↓</button>
+                <div class="slide-insert-dropdown">
+                    <button class="slide-btn">+ Insert ▾</button>
+                    <div class="slide-insert-dropdown-content">
+                        <button class="slide-insert-item" onclick="insertElement(this, 'image')">Image (→ two-col)</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'quote')">Quote</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'bullet-list')">Bullet List</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'concept')">Concept Box</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'body-text')">Body Text</button>
+                    </div>
+                </div>
+                <button class="slide-btn" onclick="duplicateSlide(this)">Duplicate</button>
+                <button class="slide-btn danger" onclick="deleteSlide(this)">Delete</button>
+            </div>
+            <span class="slide-number">02</span>
+            <p class="statement" contenteditable="true">What is a thing?</p>
+            <p class="body-text" contenteditable="true">You might think objects are self-evident. A table is a table. But Tim Ingold (2010) complicates this. His office is clearly filled with objects. When he goes outside and looks at a tree, is that an object?</p>
+        </div>
+
+        <!-- SLIDE 4: Boundaries Problem -->
+        <div class="slide" id="slide-4">
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="moveSlide(this, -1)">↑</button>
+                <button class="slide-btn" onclick="moveSlide(this, 1)">↓</button>
+                <div class="slide-insert-dropdown">
+                    <button class="slide-btn">+ Insert ▾</button>
+                    <div class="slide-insert-dropdown-content">
+                        <button class="slide-insert-item" onclick="insertElement(this, 'image')">Image (→ two-col)</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'quote')">Quote</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'bullet-list')">Bullet List</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'concept')">Concept Box</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'body-text')">Body Text</button>
+                    </div>
+                </div>
+                <button class="slide-btn" onclick="duplicateSlide(this)">Duplicate</button>
+                <button class="slide-btn danger" onclick="deleteSlide(this)">Delete</button>
+            </div>
+            <span class="slide-number">03</span>
+            <div class="two-col">
+                <div>
+                    <p class="statement-small" contenteditable="true">When algae grows on a tree, is the algae part of the tree or something separate?</p>
+                    <p class="body-text" contenteditable="true">A jumper gets an oil stain that won't wash out. The stain becomes part of the jumper. The thing has been materially changed through its history of use and contact with other materials.</p>
+                    <p class="body-text" contenteditable="true">Where things begin and end turns out to be a question with no obvious answer.</p>
+                </div>
+                <div class="image-container">
+                    <div class="image-placeholder" onclick="triggerImageUpload(this)">
+                        <span>+ Add Image</span>
+                    </div>
+                    <p class="image-caption" contenteditable="true">[Upload: photo of tree bark with lichen or moss growing on it, showing ambiguous boundary between organisms]</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: Terminology -->
+        <div class="slide" id="slide-5">
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="moveSlide(this, -1)">↑</button>
+                <button class="slide-btn" onclick="moveSlide(this, 1)">↓</button>
+                <div class="slide-insert-dropdown">
+                    <button class="slide-btn">+ Insert ▾</button>
+                    <div class="slide-insert-dropdown-content">
+                        <button class="slide-insert-item" onclick="insertElement(this, 'image')">Image (→ two-col)</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'quote')">Quote</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'bullet-list')">Bullet List</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'concept')">Concept Box</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'body-text')">Body Text</button>
+                    </div>
+                </div>
+                <button class="slide-btn" onclick="duplicateSlide(this)">Duplicate</button>
+                <button class="slide-btn danger" onclick="deleteSlide(this)">Delete</button>
+            </div>
+            <span class="slide-number">04</span>
+            <p class="statement" contenteditable="true">The words you choose carry <span class="hl">ontological weight</span>.</p>
+            <p class="body-text" contenteditable="true">Whether you write about "objects," "things," or "materials" implies different understandings of what the material world is.</p>
+            <div class="concept">
+                <p class="concept-title" contenteditable="true">Ontology</p>
+                <p class="concept-text" contenteditable="true">The study of what exists and how things exist. In material culture research, your ontological position determines whether you see things as fixed entities, as processes, as relations, or as something else entirely. This shapes what questions you can ask and what methods make sense.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: Object vs Thing -->
+        <div class="slide" id="slide-6">
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="moveSlide(this, -1)">↑</button>
+                <button class="slide-btn" onclick="moveSlide(this, 1)">↓</button>
+                <div class="slide-insert-dropdown">
+                    <button class="slide-btn">+ Insert ▾</button>
+                    <div class="slide-insert-dropdown-content">
+                        <button class="slide-insert-item" onclick="insertElement(this, 'image')">Image (→ two-col)</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'quote')">Quote</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'bullet-list')">Bullet List</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'concept')">Concept Box</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'body-text')">Body Text</button>
+                    </div>
+                </div>
+                <button class="slide-btn" onclick="duplicateSlide(this)">Duplicate</button>
+                <button class="slide-btn danger" onclick="deleteSlide(this)">Delete</button>
+            </div>
+            <span class="slide-number">05</span>
+            <p class="statement-small" contenteditable="true">Ingold (2010) prefers "thing" to "object" because of what each word implies.</p>
+            <table class="comparison-table">
+                <tr>
+                    <th contenteditable="true">Object</th>
+                    <th contenteditable="true">Thing</th>
+                </tr>
+                <tr>
+                    <td contenteditable="true">Bounded, solid, separate from us</td>
+                    <td contenteditable="true">A "gathering of the threads of life"</td>
+                </tr>
+                <tr>
+                    <td contenteditable="true">"Stands in our way" (Ingold)</td>
+                    <td contenteditable="true">Invites participation and relation</td>
+                </tr>
+                <tr>
+                    <td contenteditable="true">Suggests completion, fixedness</td>
+                    <td contenteditable="true">Suggests ongoing process, becoming</td>
+                </tr>
+            </table>
+            <p class="body-text" contenteditable="true">A house, on this view, is never a finished object. We live in it, repair it, change it continuously. It is a thing we are perpetually entangled with.</p>
+        </div>
+
+        <!-- SLIDE 7: But things also resist -->
+        <div class="slide" id="slide-7">
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="moveSlide(this, -1)">↑</button>
+                <button class="slide-btn" onclick="moveSlide(this, 1)">↓</button>
+                <div class="slide-insert-dropdown">
+                    <button class="slide-btn">+ Insert ▾</button>
+                    <div class="slide-insert-dropdown-content">
+                        <button class="slide-insert-item" onclick="insertElement(this, 'image')">Image (→ two-col)</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'quote')">Quote</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'bullet-list')">Bullet List</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'concept')">Concept Box</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'body-text')">Body Text</button>
+                    </div>
+                </div>
+                <button class="slide-btn" onclick="duplicateSlide(this)">Duplicate</button>
+                <button class="slide-btn danger" onclick="deleteSlide(this)">Delete</button>
+            </div>
+            <span class="slide-number">06</span>
+            <p class="statement" contenteditable="true">But things also have solidity. They resist us.</p>
+            <p class="body-text" contenteditable="true">Ingold's view emphasizes becoming, flow, invitation. Yet if people experience something as a bounded "object" (solid, identifiable, separate), that experience matters for research.</p>
+            <p class="body-text" contenteditable="true">Bjørnar Olsen (2010) argues that focusing only on relations means the properties and effects of things may be undermined. A table might be made of materials that were assembled and will eventually decay, but for a considerable period it is identifiably a table. Its existence as a table matters for how people interact with it.</p>
+            <p class="source-link" contenteditable="true">Olsen (2010). In Defense of Things. Altamira Press.</p>
+        </div>
+
+        <!-- SLIDE 8: Barad - Wave/Particle -->
+        <div class="slide" id="slide-8">
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="moveSlide(this, -1)">↑</button>
+                <button class="slide-btn" onclick="moveSlide(this, 1)">↓</button>
+                <div class="slide-insert-dropdown">
+                    <button class="slide-btn">+ Insert ▾</button>
+                    <div class="slide-insert-dropdown-content">
+                        <button class="slide-insert-item" onclick="insertElement(this, 'image')">Image (→ two-col)</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'quote')">Quote</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'bullet-list')">Bullet List</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'concept')">Concept Box</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'body-text')">Body Text</button>
+                    </div>
+                </div>
+                <button class="slide-btn" onclick="duplicateSlide(this)">Duplicate</button>
+                <button class="slide-btn danger" onclick="deleteSlide(this)">Delete</button>
+            </div>
+            <span class="slide-number">07</span>
+            <p class="statement-small" contenteditable="true">Can you hold both positions? Fowler and Harris (2015), drawing on physicist Karen Barad (2007), suggest you can <span class="hl">modulate</span> between seeing something as an entity AND as emerging through relations.</p>
+            <div class="concept">
+                <p class="concept-title" contenteditable="true">Wave-Particle Duality</p>
+                <p class="concept-text" contenteditable="true">In physics, electrons behave as both waves (disturbances spread through a medium) and particles (localized points in space). You cannot observe both aspects simultaneously, but you can shift between configurations depending on your experimental setup. Barad uses this as a model for understanding things. Through your research methods and theoretical framing, things are configured in particular ways.</p>
+            </div>
+            <p class="source-link" contenteditable="true">Fowler and Harris (2015). Enduring Relations. Journal of Archaeological Method and Theory.</p>
+        </div>
+
+        <!-- SLIDE 9: Materiality -->
+        <div class="slide" id="slide-9">
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="moveSlide(this, -1)">↑</button>
+                <button class="slide-btn" onclick="moveSlide(this, 1)">↓</button>
+                <div class="slide-insert-dropdown">
+                    <button class="slide-btn">+ Insert ▾</button>
+                    <div class="slide-insert-dropdown-content">
+                        <button class="slide-insert-item" onclick="insertElement(this, 'image')">Image (→ two-col)</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'quote')">Quote</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'bullet-list')">Bullet List</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'concept')">Concept Box</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'body-text')">Body Text</button>
+                    </div>
+                </div>
+                <button class="slide-btn" onclick="duplicateSlide(this)">Duplicate</button>
+                <button class="slide-btn danger" onclick="deleteSlide(this)">Delete</button>
+            </div>
+            <span class="slide-number">08</span>
+            <div class="concept">
+                <p class="concept-title" contenteditable="true">Materiality</p>
+                <p class="concept-text" contenteditable="true">The properties and capacities that things have, and how these lead to particular effects. A wooden table can be sturdy, porous, warm to the touch, able to be carved. These properties shape what the table can do and how people relate to it.</p>
+            </div>
+            <p class="body-text" contenteditable="true">But materiality cannot be reduced to fixed properties. Karen Barad (2003) talks about matter having an "ongoing historicity." Material properties emerge through relations with people, environments, and other things. Even if some properties seem absolute, which aspects of the material matter, and how they emerge through processes and relations, are what you need to understand.</p>
+            <p class="source-link" contenteditable="true">See Drazin and Küchler (2015) for further discussion of emergent material properties.</p>
+        </div>
+
+        <!-- SLIDE 10: Affordances -->
+        <div class="slide" id="slide-10">
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="moveSlide(this, -1)">↑</button>
+                <button class="slide-btn" onclick="moveSlide(this, 1)">↓</button>
+                <div class="slide-insert-dropdown">
+                    <button class="slide-btn">+ Insert ▾</button>
+                    <div class="slide-insert-dropdown-content">
+                        <button class="slide-insert-item" onclick="insertElement(this, 'image')">Image (→ two-col)</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'quote')">Quote</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'bullet-list')">Bullet List</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'concept')">Concept Box</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'body-text')">Body Text</button>
+                    </div>
+                </div>
+                <button class="slide-btn" onclick="duplicateSlide(this)">Duplicate</button>
+                <button class="slide-btn danger" onclick="deleteSlide(this)">Delete</button>
+            </div>
+            <span class="slide-number">09</span>
+            <p class="statement-small" contenteditable="true">James Gibson (1979) offers one way to think about material properties in context.</p>
+            <div class="concept">
+                <p class="concept-title" contenteditable="true">Affordances</p>
+                <p class="concept-text" contenteditable="true">What an environment or object offers, provides, or furnishes to an organism. A flat horizontal surface at knee height affords sitting for humans. A small hole in a wall affords entry for a mouse but not a cat. Affordances are relational. They exist between things and the beings that perceive and use them.</p>
+            </div>
+            <p class="body-text" contenteditable="true">A table affords placing things on it, sitting chairs next to it. Material properties don't stand alone. They exist in relation to people, environments, and how people perceive them. This opens up the relations between things, people, and context in research.</p>
+            <p class="source-link" contenteditable="true">Gibson (1979). The Ecological Approach to Visual Perception. Houghton Mifflin.</p>
+        </div>
+
+        <!-- SLIDE 11: Agency - Gell -->
+        <div class="slide" id="slide-11">
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="moveSlide(this, -1)">↑</button>
+                <button class="slide-btn" onclick="moveSlide(this, 1)">↓</button>
+                <div class="slide-insert-dropdown">
+                    <button class="slide-btn">+ Insert ▾</button>
+                    <div class="slide-insert-dropdown-content">
+                        <button class="slide-insert-item" onclick="insertElement(this, 'image')">Image (→ two-col)</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'quote')">Quote</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'bullet-list')">Bullet List</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'concept')">Concept Box</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'body-text')">Body Text</button>
+                    </div>
+                </div>
+                <button class="slide-btn" onclick="duplicateSlide(this)">Duplicate</button>
+                <button class="slide-btn danger" onclick="deleteSlide(this)">Delete</button>
+            </div>
+            <span class="slide-number">10</span>
+            <p class="statement" contenteditable="true">Things are not passive. We cannot just impose meanings onto them.</p>
+            <p class="body-text" contenteditable="true">Alfred Gell (1998) distinguishes between primary agents (humans with intention) and secondary agents (objects with causal efficacy). A shoe designer cannot simply impose "sexiness" onto shoes. They work with fabrics and shapes, and the shoes come to carry the maker's intentionality.</p>
+            <p class="body-text" contenteditable="true">But the shoes can also act back. If heels fall off or cause blisters, the materiality has thwarted both designer and wearer. The material resists the intention.</p>
+            <p class="source-link" contenteditable="true">Gell (1998). Art and Agency. Oxford University Press.</p>
+        </div>
+
+        <!-- SLIDE 12: Berlin Key - ANT -->
+        <div class="slide" id="slide-12">
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="moveSlide(this, -1)">↑</button>
+                <button class="slide-btn" onclick="moveSlide(this, 1)">↓</button>
+                <div class="slide-insert-dropdown">
+                    <button class="slide-btn">+ Insert ▾</button>
+                    <div class="slide-insert-dropdown-content">
+                        <button class="slide-insert-item" onclick="insertElement(this, 'image')">Image (→ two-col)</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'quote')">Quote</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'bullet-list')">Bullet List</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'concept')">Concept Box</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'body-text')">Body Text</button>
+                    </div>
+                </div>
+                <button class="slide-btn" onclick="duplicateSlide(this)">Duplicate</button>
+                <button class="slide-btn danger" onclick="deleteSlide(this)">Delete</button>
+            </div>
+            <span class="slide-number">11</span>
+            <div class="two-col">
+                <div>
+                    <p class="section-label" contenteditable="true">Actor Network Theory</p>
+                    <p class="statement-small" contenteditable="true">In ANT, agency emerges from <span class="hl">networks of humans and non-humans</span>.</p>
+                    <p class="body-text" contenteditable="true">Bruno Latour (1993) analyzed the Berlin key, a double-ended key used in Berlin apartment buildings. The key has teeth on both ends. To unlock your door, you insert the key, turn it, then push the key all the way through the lock. It falls out on the other side. You cannot retrieve the key without locking the door behind you.</p>
+                    <p class="body-text" contenteditable="true">The material arrangement forces you to lock up. You cannot separate "human agency" from "key agency." The behavior emerges from the network.</p>
+                </div>
+                <div class="image-container">
+                    <div class="image-placeholder" onclick="triggerImageUpload(this)">
+                        <span>+ Add Image</span>
+                    </div>
+                    <p class="image-caption" contenteditable="true">[Upload: photo or diagram of a Berlin key showing the double-ended design with teeth on both sides]</p>
+                </div>
+            </div>
+            <p class="source-link" contenteditable="true">Latour (2005). Reassembling the Social. Oxford University Press.</p>
+        </div>
+
+        <!-- SLIDE 13: Bennett - Vibrant Matter -->
+        <div class="slide" id="slide-13">
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="moveSlide(this, -1)">↑</button>
+                <button class="slide-btn" onclick="moveSlide(this, 1)">↓</button>
+                <div class="slide-insert-dropdown">
+                    <button class="slide-btn">+ Insert ▾</button>
+                    <div class="slide-insert-dropdown-content">
+                        <button class="slide-insert-item" onclick="insertElement(this, 'image')">Image (→ two-col)</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'quote')">Quote</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'bullet-list')">Bullet List</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'concept')">Concept Box</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'body-text')">Body Text</button>
+                    </div>
+                </div>
+                <button class="slide-btn" onclick="duplicateSlide(this)">Duplicate</button>
+                <button class="slide-btn danger" onclick="deleteSlide(this)">Delete</button>
+            </div>
+            <span class="slide-number">12</span>
+            <p class="statement-small" contenteditable="true">Some theorists reject the word "agency" entirely and focus instead on what makes things <span class="hl">vibrant</span>.</p>
+            <div class="quote">
+                <span contenteditable="true">"The capacity of things...not only to impede...the will...of humans but also to act as quasi agents or forces with trajectories, propensities, or tendencies of their own."</span>
+                <span class="quote-source" contenteditable="true">Jane Bennett (2009), Vibrant Matter, p. vii</span>
+            </div>
+            <p class="body-text" contenteditable="true">Bennett, a political theorist, argues that recognizing the vitality of matter changes how we think about ethics and politics. If things have force and trajectory, humans are less the masters of the world and more participants in it.</p>
+        </div>
+
+        <!-- SLIDE 14: Ingold's critique -->
+        <div class="slide" id="slide-14">
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="moveSlide(this, -1)">↑</button>
+                <button class="slide-btn" onclick="moveSlide(this, 1)">↓</button>
+                <div class="slide-insert-dropdown">
+                    <button class="slide-btn">+ Insert ▾</button>
+                    <div class="slide-insert-dropdown-content">
+                        <button class="slide-insert-item" onclick="insertElement(this, 'image')">Image (→ two-col)</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'quote')">Quote</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'bullet-list')">Bullet List</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'concept')">Concept Box</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'body-text')">Body Text</button>
+                    </div>
+                </div>
+                <button class="slide-btn" onclick="duplicateSlide(this)">Duplicate</button>
+                <button class="slide-btn danger" onclick="deleteSlide(this)">Delete</button>
+            </div>
+            <span class="slide-number">13</span>
+            <p class="statement" contenteditable="true">Do we even need the concept of "agency"?</p>
+            <p class="body-text" contenteditable="true">Ingold (2007) suggests you only need agency if you've already severed things from the contexts that make them alive. If you understand things as being "in life" (part of entangled flows of materials), you don't need to look for life "in" things.</p>
+            <p class="body-text" contenteditable="true">The debate is not settled. What matters for research is being explicit about your position. Are things agents? Do they have vitality? Or is agency the wrong question?</p>
+        </div>
+
+        <!-- SLIDE 15: Relations -->
+        <div class="slide" id="slide-15">
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="moveSlide(this, -1)">↑</button>
+                <button class="slide-btn" onclick="moveSlide(this, 1)">↓</button>
+                <div class="slide-insert-dropdown">
+                    <button class="slide-btn">+ Insert ▾</button>
+                    <div class="slide-insert-dropdown-content">
+                        <button class="slide-insert-item" onclick="insertElement(this, 'image')">Image (→ two-col)</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'quote')">Quote</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'bullet-list')">Bullet List</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'concept')">Concept Box</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'body-text')">Body Text</button>
+                    </div>
+                </div>
+                <button class="slide-btn" onclick="duplicateSlide(this)">Duplicate</button>
+                <button class="slide-btn danger" onclick="deleteSlide(this)">Delete</button>
+            </div>
+            <span class="slide-number">14</span>
+            <p class="statement-small" contenteditable="true">Material relationality is central to ANT, new materialism, and assemblage theory. But there's an important distinction.</p>
+            <table class="comparison-table">
+                <tr>
+                    <th contenteditable="true">Things IN Relations</th>
+                    <th contenteditable="true">Things AS Relations</th>
+                </tr>
+                <tr>
+                    <td contenteditable="true">How do people relate to this object?</td>
+                    <td contenteditable="true">What relations produced this thing?</td>
+                </tr>
+                <tr>
+                    <td contenteditable="true">How do objects relate to other objects?</td>
+                    <td contenteditable="true">What are its material histories?</td>
+                </tr>
+                <tr>
+                    <td contenteditable="true">Things exist currently alongside other things</td>
+                    <td contenteditable="true">How are relations between materials happening now?</td>
+                </tr>
+            </table>
+            <p class="body-text" contenteditable="true">A wardrobe could be approached both ways (see Woodward and Greasley, 2015). As a set of relations between items of clothing, and as things that are themselves constituted through relations.</p>
+        </div>
+
+        <!-- SLIDE 16: Units of Analysis -->
+        <div class="slide" id="slide-16">
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="moveSlide(this, -1)">↑</button>
+                <button class="slide-btn" onclick="moveSlide(this, 1)">↓</button>
+                <div class="slide-insert-dropdown">
+                    <button class="slide-btn">+ Insert ▾</button>
+                    <div class="slide-insert-dropdown-content">
+                        <button class="slide-insert-item" onclick="insertElement(this, 'image')">Image (→ two-col)</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'quote')">Quote</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'bullet-list')">Bullet List</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'concept')">Concept Box</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'body-text')">Body Text</button>
+                    </div>
+                </div>
+                <button class="slide-btn" onclick="duplicateSlide(this)">Duplicate</button>
+                <button class="slide-btn danger" onclick="deleteSlide(this)">Delete</button>
+            </div>
+            <span class="slide-number">15</span>
+            <p class="statement" contenteditable="true">Even if relations are infinite, you must draw <span class="hl">boundaries</span> around what you research.</p>
+            <p class="body-text" contenteditable="true">Your theoretical framework helps define units of analysis.</p>
+            <ul class="bullet-list">
+                <li contenteditable="true"><strong>Assemblage theory</strong> (Edensor, 2011) approaches a Manchester church as an assemblage containing smaller assemblages (a door, a pew) and being part of larger ones (the neighborhood, the city).</li>
+                <li contenteditable="true"><strong>ANT</strong> (Yaneva, 2013) focuses on heterogeneous entities in architecture and how they connect, move, and transform.</li>
+                <li contenteditable="true"><strong>New materialism</strong> (Barad) focuses on configurations that include your own position as researcher.</li>
+            </ul>
+        </div>
+
+        <!-- SLIDE 17: Theoretical Frameworks -->
+        <div class="slide" id="slide-17">
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="moveSlide(this, -1)">↑</button>
+                <button class="slide-btn" onclick="moveSlide(this, 1)">↓</button>
+                <div class="slide-insert-dropdown">
+                    <button class="slide-btn">+ Insert ▾</button>
+                    <div class="slide-insert-dropdown-content">
+                        <button class="slide-insert-item" onclick="insertElement(this, 'image')">Image (→ two-col)</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'quote')">Quote</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'bullet-list')">Bullet List</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'concept')">Concept Box</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'body-text')">Body Text</button>
+                    </div>
+                </div>
+                <button class="slide-btn" onclick="duplicateSlide(this)">Duplicate</button>
+                <button class="slide-btn danger" onclick="deleteSlide(this)">Delete</button>
+            </div>
+            <span class="slide-number">16</span>
+            <p class="section-label" contenteditable="true">Theoretical Frameworks</p>
+            <p class="statement-small" contenteditable="true">Different theories lead to different research configurations.</p>
+            <div class="examples">
+                <div class="example">
+                    <p class="example-title" contenteditable="true">New Materialism (Barad)</p>
+                    <p class="example-text" contenteditable="true">All matter is relational. Things are produced through "intra-action" (mutual constitution). Research apparatus is part of what is being studied.</p>
+                </div>
+                <div class="example">
+                    <p class="example-title" contenteditable="true">Actor Network Theory (Latour)</p>
+                    <p class="example-text" contenteditable="true">The social is assembled through human/non-human relations. Follow the actors as they emerge, move, and connect.</p>
+                </div>
+                <div class="example">
+                    <p class="example-title" contenteditable="true">Assemblage Theory (DeLanda)</p>
+                    <p class="example-text" contenteditable="true">Heterogeneous forms come into relations. Assemblages have emergent properties. Relations are tenuous and can be broken.</p>
+                </div>
+                <div class="example">
+                    <p class="example-title" contenteditable="true">Objectification (Miller)</p>
+                    <p class="example-text" contenteditable="true">Dialectical relation between people and things. We externalize ourselves in objects, then re-appropriate them back into identity.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 18: Theory doesn't come first -->
+        <div class="slide" id="slide-18">
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="moveSlide(this, -1)">↑</button>
+                <button class="slide-btn" onclick="moveSlide(this, 1)">↓</button>
+                <div class="slide-insert-dropdown">
+                    <button class="slide-btn">+ Insert ▾</button>
+                    <div class="slide-insert-dropdown-content">
+                        <button class="slide-insert-item" onclick="insertElement(this, 'image')">Image (→ two-col)</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'quote')">Quote</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'bullet-list')">Bullet List</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'concept')">Concept Box</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'body-text')">Body Text</button>
+                    </div>
+                </div>
+                <button class="slide-btn" onclick="duplicateSlide(this)">Duplicate</button>
+                <button class="slide-btn danger" onclick="deleteSlide(this)">Delete</button>
+            </div>
+            <span class="slide-number">17</span>
+            <p class="statement" contenteditable="true">Theory doesn't have to come first.</p>
+            <p class="body-text" contenteditable="true">There's an assumption that research starts with theory, which gives you ontology, then you develop methods. But this is only one route.</p>
+            <p class="body-text" contenteditable="true">Woodward describes starting from something striking in the world, then using theories to develop research questions. For her wardrobe research, she noticed how fashion literature reduced clothing to "fashion," far removed from how people actually kept, wore, and passed on clothes. Theory came after, as a way to think about what she was looking at.</p>
+            <p class="body-text" contenteditable="true">Henare et al. (2007) propose letting your understanding of what things are emerge from fieldwork itself, taking things as they are conceptualized and used in particular contexts.</p>
+        </div>
+
+        <!-- SLIDE 19: Methods are performative -->
+        <div class="slide" id="slide-19">
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="moveSlide(this, -1)">↑</button>
+                <button class="slide-btn" onclick="moveSlide(this, 1)">↓</button>
+                <div class="slide-insert-dropdown">
+                    <button class="slide-btn">+ Insert ▾</button>
+                    <div class="slide-insert-dropdown-content">
+                        <button class="slide-insert-item" onclick="insertElement(this, 'image')">Image (→ two-col)</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'quote')">Quote</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'bullet-list')">Bullet List</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'concept')">Concept Box</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'body-text')">Body Text</button>
+                    </div>
+                </div>
+                <button class="slide-btn" onclick="duplicateSlide(this)">Duplicate</button>
+                <button class="slide-btn danger" onclick="deleteSlide(this)">Delete</button>
+            </div>
+            <span class="slide-number">18</span>
+            <p class="statement" contenteditable="true">Methods do not just access what you're trying to understand. They <span class="hl">enact</span> the world.</p>
+            <p class="body-text" contenteditable="true">John Law and John Urry (2004) argue that methods help create particular realities. Methods are part of the configurations of what you research.</p>
+            <p class="body-text" contenteditable="true">If you ask interview questions centering people's experiences and meanings, things become absent from the research. Material methods involve thinking about how the materiality of methods themselves can generate data. There is no fixed match between theories and methods.</p>
+            <p class="source-link" contenteditable="true">Law and Urry (2004). Enacting the Social. Economy and Society.</p>
+        </div>
+
+        <!-- SLIDE 20: Four Questions -->
+        <div class="slide" id="slide-20">
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="moveSlide(this, -1)">↑</button>
+                <button class="slide-btn" onclick="moveSlide(this, 1)">↓</button>
+                <div class="slide-insert-dropdown">
+                    <button class="slide-btn">+ Insert ▾</button>
+                    <div class="slide-insert-dropdown-content">
+                        <button class="slide-insert-item" onclick="insertElement(this, 'image')">Image (→ two-col)</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'quote')">Quote</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'bullet-list')">Bullet List</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'concept')">Concept Box</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'body-text')">Body Text</button>
+                    </div>
+                </div>
+                <button class="slide-btn" onclick="duplicateSlide(this)">Duplicate</button>
+                <button class="slide-btn danger" onclick="deleteSlide(this)">Delete</button>
+            </div>
+            <span class="slide-number">19</span>
+            <p class="section-label" contenteditable="true">Synthesis</p>
+            <p class="statement-small" contenteditable="true">When orienting yourself to things, four questions frame your approach.</p>
+            <ol class="numbered-list">
+                <li contenteditable="true"><strong>What do you think things are?</strong> Objects, things, entanglements of materials, entities in relations?</li>
+                <li contenteditable="true"><strong>What effects do you think they have?</strong> Agency, vitality, affordances, causal efficacy?</li>
+                <li contenteditable="true"><strong>Where do things end?</strong> Boundaries, relations to other things and environments?</li>
+                <li contenteditable="true"><strong>What is your unit of analysis?</strong> Assemblages, networks, configurations, objects, practices?</li>
+            </ol>
+            <p class="body-text" contenteditable="true">These questions are not answered once at the start. Methods themselves can provoke you to think differently. The relationship between theory, methods, and empirical work is iterative.</p>
+        </div>
+
+        <!-- SLIDE 21: Sources -->
+        <div class="slide" id="slide-21">
+            <div class="slide-controls">
+                <button class="slide-btn" onclick="moveSlide(this, -1)">↑</button>
+                <button class="slide-btn" onclick="moveSlide(this, 1)">↓</button>
+                <div class="slide-insert-dropdown">
+                    <button class="slide-btn">+ Insert ▾</button>
+                    <div class="slide-insert-dropdown-content">
+                        <button class="slide-insert-item" onclick="insertElement(this, 'image')">Image (→ two-col)</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'quote')">Quote</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'bullet-list')">Bullet List</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'concept')">Concept Box</button>
+                        <button class="slide-insert-item" onclick="insertElement(this, 'body-text')">Body Text</button>
+                    </div>
+                </div>
+                <button class="slide-btn" onclick="duplicateSlide(this)">Duplicate</button>
+                <button class="slide-btn danger" onclick="deleteSlide(this)">Delete</button>
+            </div>
+            <span class="slide-number">20</span>
+            <p class="heading" contenteditable="true">Sources</p>
+            <ul class="sources-list">
+                <li contenteditable="true">Barad, K. (2003). Posthumanist Performativity. Signs.</li>
+                <li contenteditable="true">Barad, K. (2007). Meeting the Universe Halfway. Duke UP.</li>
+                <li contenteditable="true">Bennett, J. (2009). Vibrant Matter. Duke UP.</li>
+                <li contenteditable="true">DeLanda, M. (2016). Assemblage Theory. Edinburgh UP.</li>
+                <li contenteditable="true">Drazin, A. and Küchler, S. (2015). The Social Life of Materials. Bloomsbury.</li>
+                <li contenteditable="true">Edensor, T. (2011). Entangled Agencies. Environment and Planning D.</li>
+                <li contenteditable="true">Fowler, C. and Harris, O. (2015). Enduring Relations. Journal of Archaeological Method and Theory.</li>
+                <li contenteditable="true">Gell, A. (1998). Art and Agency. Oxford UP.</li>
+                <li contenteditable="true">Gibson, J.J. (1979). The Ecological Approach to Visual Perception. Houghton Mifflin.</li>
+                <li contenteditable="true">Henare, A. et al. (2007). Thinking Through Things. Routledge.</li>
+                <li contenteditable="true">Ingold, T. (2007). Materials Against Materiality. Archaeological Dialogues.</li>
+                <li contenteditable="true">Ingold, T. (2010). Bringing Things to Life. NORA.</li>
+                <li contenteditable="true">Latour, B. (1993). We Have Never Been Modern. Harvard UP.</li>
+                <li contenteditable="true">Latour, B. (2005). Reassembling the Social. Oxford UP.</li>
+                <li contenteditable="true">Law, J. and Urry, J. (2004). Enacting the Social. Economy and Society.</li>
+                <li contenteditable="true">Miller, D. (1987). Material Culture and Mass Consumption. Blackwell.</li>
+                <li contenteditable="true">Olsen, B. (2010). In Defense of Things. Altamira.</li>
+                <li contenteditable="true">Woodward, S. (2022). Material Methods. Sage.</li>
+                <li contenteditable="true">Woodward, S. and Greasley, A. (2015). Personal Collections as Material Assemblages. Journal of Consumer Culture.</li>
+                <li contenteditable="true">Yaneva, A. (2013). Actor-Network-Theory Approaches to the Archaeology of Contemporary Architecture.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="nav-hint">
+        <span class="nav-key" id="prevBtn">←</span>
+        <span class="nav-key" id="nextBtn">→</span>
+    </div>
+
+    <script>
+        const slides = () => document.querySelectorAll('.slide');
+        let currentSlide = 0;
+
+        function goToSlide(index) {
+            const s = slides();
+            if (index < 0) index = 0;
+            if (index >= s.length) index = s.length - 1;
+            currentSlide = index;
+            s[index].scrollIntoView({ behavior: 'smooth' });
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const s = slides();
+            const progress = ((currentSlide + 1) / s.length) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function updateSlideNumbers() {
+            const s = slides();
+            s.forEach((slide, i) => {
+                const num = slide.querySelector('.slide-number');
+                if (num && i > 0) {
+                    num.textContent = String(i).padStart(2, '0');
+                }
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.target.hasAttribute('contenteditable')) return;
+            if (e.key === 'Escape') {
+                closeLightbox();
+                return;
+            }
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                goToSlide(currentSlide + 1);
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                goToSlide(currentSlide - 1);
+            }
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => goToSlide(currentSlide - 1));
+        document.getElementById('nextBtn').addEventListener('click', () => goToSlide(currentSlide + 1));
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    currentSlide = Array.from(slides()).indexOf(entry.target);
+                    updateProgress();
+                }
+            });
+        }, { threshold: 0.5 });
+
+        slides().forEach(slide => observer.observe(slide));
+        updateProgress();
+
+        function formatText(command) {
+            document.execCommand(command, false, null);
+        }
+
+        function toggleHighlight(color = 'yellow') {
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                const range = selection.getRangeAt(0);
+                const selectedText = range.toString();
+                if (selectedText) {
+                    const span = document.createElement('span');
+                    span.className = color === 'yellow' ? 'hl' : `hl-${color}`;
+                    range.surroundContents(span);
+                }
+            }
+        }
+
+        let currentImageContainer = null;
+
+        function triggerImageUpload(element) {
+            currentImageContainer = element.closest('.image-container') || element.closest('.image-large');
+            document.getElementById('imageInput').click();
+        }
+
+        document.getElementById('imageInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && currentImageContainer) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentImageContainer.innerHTML = `<img src="${e.target.result}" onclick="handleImageClick(event, this)" data-action="replace">`;
+                };
+                reader.readAsDataURL(file);
+            }
+            this.value = '';
+        });
+
+        function handleImageClick(event, img) {
+            if (img.dataset.action === 'replace') {
+                triggerImageUpload(img);
+            }
+        }
+
+        function openLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        function getSlideTemplate(type) {
+            const controls = `
+                <div class="slide-controls">
+                    <button class="slide-btn" onclick="moveSlide(this, -1)">↑</button>
+                    <button class="slide-btn" onclick="moveSlide(this, 1)">↓</button>
+                    <div class="slide-insert-dropdown">
+                        <button class="slide-btn">+ Insert ▾</button>
+                        <div class="slide-insert-dropdown-content">
+                            <button class="slide-insert-item" onclick="insertElement(this, 'image')">Image (→ two-col)</button>
+                            <button class="slide-insert-item" onclick="insertElement(this, 'quote')">Quote</button>
+                            <button class="slide-insert-item" onclick="insertElement(this, 'bullet-list')">Bullet List</button>
+                            <button class="slide-insert-item" onclick="insertElement(this, 'concept')">Concept Box</button>
+                            <button class="slide-insert-item" onclick="insertElement(this, 'body-text')">Body Text</button>
+                        </div>
+                    </div>
+                    <button class="slide-btn" onclick="duplicateSlide(this)">Duplicate</button>
+                    <button class="slide-btn danger" onclick="deleteSlide(this)">Delete</button>
+                </div>
+                <span class="slide-number">00</span>
+            `;
+
+            const templates = {
+                'statement': `<div class="slide">${controls}<p class="statement" contenteditable="true">New statement goes here.</p><p class="body-text" contenteditable="true">Supporting text.</p></div>`,
+                'quote': `<div class="slide">${controls}<div class="quote"><span contenteditable="true">"Your quote here."</span><span class="quote-source" contenteditable="true">Author Name</span></div><p class="body-text" contenteditable="true">Context for the quote.</p></div>`,
+                'two-col': `<div class="slide">${controls}<div class="two-col"><div><p class="section-label" contenteditable="true">Label</p><p class="statement-small" contenteditable="true">Statement here.</p><p class="body-text" contenteditable="true">Additional text.</p></div><div class="image-container"><div class="image-placeholder" onclick="triggerImageUpload(this)"><span>+ Add Image</span></div></div></div></div>`,
+                'big-image': `<div class="slide">${controls}<div class="image-large"><div class="image-placeholder-wide" onclick="triggerImageUpload(this)"><span>+ Add Large Image</span></div></div><p class="image-caption" contenteditable="true">Image caption goes here.</p></div>`,
+                'bullet-list': `<div class="slide">${controls}<p class="statement-small" contenteditable="true">Slide title here.</p><ul class="bullet-list"><li contenteditable="true">First point</li><li contenteditable="true">Second point</li><li contenteditable="true">Third point</li><li contenteditable="true">Fourth point</li></ul></div>`,
+                'numbered-list': `<div class="slide">${controls}<p class="statement-small" contenteditable="true">Slide title here.</p><ol class="numbered-list"><li contenteditable="true">First item</li><li contenteditable="true">Second item</li><li contenteditable="true">Third item</li><li contenteditable="true">Fourth item</li></ol></div>`,
+                'comparison': `<div class="slide">${controls}<p class="statement-small" contenteditable="true">Comparison title.</p><table class="comparison-table"><tr><th contenteditable="true">Column A</th><th contenteditable="true">Column B</th></tr><tr><td contenteditable="true">Item 1A</td><td contenteditable="true">Item 1B</td></tr><tr><td contenteditable="true">Item 2A</td><td contenteditable="true">Item 2B</td></tr></table></div>`,
+                'concept': `<div class="slide">${controls}<p class="statement-small" contenteditable="true">Introducing a concept.</p><div class="concept"><p class="concept-title" contenteditable="true">Concept Name</p><p class="concept-text" contenteditable="true">Explanation of the concept goes here.</p></div><p class="body-text" contenteditable="true">Additional context.</p></div>`,
+                'examples': `<div class="slide">${controls}<p class="section-label" contenteditable="true">Examples</p><p class="statement-small" contenteditable="true">Grid title.</p><div class="examples"><div class="example"><p class="example-title" contenteditable="true">Example One</p><p class="example-text" contenteditable="true">Description.</p></div><div class="example"><p class="example-title" contenteditable="true">Example Two</p><p class="example-text" contenteditable="true">Description.</p></div></div></div>`,
+                'sources': `<div class="slide">${controls}<p class="heading" contenteditable="true">Sources</p><ul class="sources-list"><li contenteditable="true">Author (Year). Title. Publication.</li><li contenteditable="true">Author (Year). Title. Publication.</li></ul></div>`
+            };
+            return templates[type];
+        }
+
+        function addSlide(type) {
+            const container = document.querySelector('.slides-container');
+            const template = getSlideTemplate(type);
+            container.insertAdjacentHTML('beforeend', template);
+            const newSlide = container.lastElementChild;
+            observer.observe(newSlide);
+            updateSlideNumbers();
+            newSlide.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function deleteSlide(btn) {
+            const slide = btn.closest('.slide');
+            if (slides().length > 1) {
+                slide.remove();
+                updateSlideNumbers();
+            }
+        }
+
+        function duplicateSlide(btn) {
+            const slide = btn.closest('.slide');
+            const clone = slide.cloneNode(true);
+            slide.after(clone);
+            observer.observe(clone);
+            updateSlideNumbers();
+        }
+
+        function moveSlide(btn, direction) {
+            const slide = btn.closest('.slide');
+            const container = document.querySelector('.slides-container');
+            const allSlides = Array.from(slides());
+            const index = allSlides.indexOf(slide);
+            const newIndex = index + direction;
+
+            if (newIndex >= 0 && newIndex < allSlides.length) {
+                if (direction === -1) {
+                    container.insertBefore(slide, allSlides[newIndex]);
+                } else {
+                    container.insertBefore(allSlides[newIndex], slide);
+                }
+                updateSlideNumbers();
+            }
+        }
+
+        function insertElement(btn, type) {
+            const slide = btn.closest('.slide');
+            const slideControls = slide.querySelector('.slide-controls');
+            const slideNumber = slide.querySelector('.slide-number');
+
+            const elements = {
+                'quote': `
+                    <div class="quote">
+                        <span contenteditable="true">"Add your quote here."</span>
+                        <span class="quote-source" contenteditable="true">Author Name</span>
+                    </div>
+                `,
+                'bullet-list': `
+                    <ul class="bullet-list">
+                        <li contenteditable="true">First point</li>
+                        <li contenteditable="true">Second point</li>
+                        <li contenteditable="true">Third point</li>
+                    </ul>
+                `,
+                'concept': `
+                    <div class="concept">
+                        <p class="concept-title" contenteditable="true">Concept Name</p>
+                        <p class="concept-text" contenteditable="true">Explanation of the concept goes here.</p>
+                    </div>
+                `,
+                'body-text': `
+                    <p class="body-text" contenteditable="true">Additional explanation or context.</p>
+                `
+            };
+
+            if (type === 'image') {
+                if (slide.querySelector('.two-col')) {
+                    const twoCol = slide.querySelector('.two-col');
+                    const rightCol = twoCol.lastElementChild;
+                    if (!rightCol.classList.contains('image-container')) {
+                        rightCol.innerHTML = `
+                            <div class="image-container">
+                                <div class="image-placeholder" onclick="triggerImageUpload(this)">
+                                    <span>+ Add Image</span>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    return;
+                }
+
+                const existingContent = [];
+                Array.from(slide.children).forEach(child => {
+                    if (!child.classList.contains('slide-controls') &&
+                        !child.classList.contains('slide-number')) {
+                        existingContent.push(child.outerHTML);
+                    }
+                });
+
+                slide.innerHTML = '';
+                if (slideControls) slide.appendChild(slideControls.cloneNode(true));
+                if (slideNumber) {
+                    const newNum = document.createElement('span');
+                    newNum.className = 'slide-number';
+                    newNum.textContent = slideNumber.textContent;
+                    slide.appendChild(newNum);
+                }
+
+                const twoCol = document.createElement('div');
+                twoCol.className = 'two-col';
+
+                const leftCol = document.createElement('div');
+                leftCol.innerHTML = existingContent.join('');
+
+                const rightCol = document.createElement('div');
+                rightCol.className = 'image-container';
+                rightCol.innerHTML = `
+                    <div class="image-placeholder" onclick="triggerImageUpload(this)">
+                        <span>+ Add Image</span>
+                    </div>
+                `;
+
+                twoCol.appendChild(leftCol);
+                twoCol.appendChild(rightCol);
+                slide.appendChild(twoCol);
+
+                return;
+            }
+
+            const elementHTML = elements[type];
+            if (elementHTML) {
+                const temp = document.createElement('div');
+                temp.innerHTML = elementHTML;
+                const newElement = temp.firstElementChild;
+
+                const sourcesList = slide.querySelector('.sources-list');
+                if (sourcesList) {
+                    sourcesList.parentNode.insertBefore(newElement, sourcesList);
+                } else {
+                    slide.appendChild(newElement);
+                }
+            }
+        }
+
+        function saveHTML() {
+            const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+            const blob = new Blob([html], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'material-methods-slides.html';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function exportPDF() {
+            window.print();
+        }
+
+        function exportClean() {
+            const clone = document.documentElement.cloneNode(true);
+            clone.querySelector('.toolbar')?.remove();
+            clone.querySelectorAll('.slide-controls').forEach(el => el.remove());
+            clone.querySelectorAll('[contenteditable]').forEach(el => {
+                el.removeAttribute('contenteditable');
+            });
+            clone.querySelectorAll('.image-container img, .image-large img').forEach(el => {
+                const src = el.getAttribute('src');
+                el.setAttribute('onclick', `openLightbox('${src}')`);
+                el.removeAttribute('data-action');
+                el.style.cursor = 'pointer';
+            });
+            clone.querySelectorAll('.image-placeholder, .image-placeholder-wide').forEach(el => {
+                el.remove();
+            });
+            const style = clone.querySelector('style');
+            if (style) {
+                style.textContent = style.textContent.replace(/\.image-container:hover::after\s*\{[^}]+\}/g, '');
+                style.textContent = style.textContent.replace(/\.image-large:hover::after\s*\{[^}]+\}/g, '');
+            }
+            clone.querySelector('#imageInput')?.remove();
+            const container = clone.querySelector('.slides-container');
+            if (container) container.style.marginTop = '0';
+            const progress = clone.querySelector('.progress');
+            if (progress) progress.style.top = '0';
+
+            const html = '<!DOCTYPE html>\n' + clone.outerHTML;
+            const blob = new Blob([html], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'material-methods-presentation.html';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
