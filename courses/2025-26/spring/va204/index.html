@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VA 204 - Language of Drawing II</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #1a1a1a;
+            --gray-dark: #4a4a4a;
+            --gray-mid: #6b6b6b;
+            --gray-light: #e5e5e5;
+            --white: #fafafa;
+            --module-1: #8B2635;
+            --module-2: #4A5568;
+            --module-3: #2C7A7B;
+            --module-4: #92400E;
+            --module-project: #6B5B4F;
+            /* Assessment colors - muted, consistent with module colors */
+            --assess-project: #6B5B4F;
+            --assess-sketchbook: #2C7A7B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--black);
+            background: var(--white);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 64px 24px;
+        }
+
+        /* Cover Image */
+        .cover-image {
+            margin: 0 0 24px 0;
+        }
+
+        .cover-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .cover-image figcaption {
+            font-size: 10px;
+            color: var(--gray-mid);
+            text-align: right;
+            margin-top: 6px;
+            letter-spacing: 0.02em;
+        }
+
+        /* Header */
+        header {
+            margin-bottom: 24px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .course-code {
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            color: var(--gray-mid);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 24px;
+        }
+
+        .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+            font-size: 14px;
+            color: var(--gray-dark);
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .meta-label {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--gray-mid);
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 56px;
+        }
+
+        h2 {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gray-mid);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-dark);
+        }
+
+        /* Learning Outcomes */
+        .outcomes {
+            list-style: none;
+            counter-reset: outcome;
+        }
+
+        .outcomes li {
+            counter-increment: outcome;
+            padding-left: 32px;
+            position: relative;
+            margin-bottom: 12px;
+            color: var(--gray-dark);
+        }
+
+        .outcomes li::before {
+            content: counter(outcome);
+            position: absolute;
+            left: 0;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-mid);
+            width: 20px;
+            text-align: right;
+        }
+
+        /* Course Structure */
+        .structure-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 16px;
+            margin-bottom: 24px;
+        }
+
+        .structure-item {
+            padding: 16px;
+            background: #f5f5f5;
+            border-radius: 4px;
+        }
+
+        .structure-item h4 {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .structure-item p {
+            font-size: 13px;
+            margin-bottom: 0;
+        }
+
+        /* Modules */
+        .module {
+            margin-bottom: 48px;
+        }
+
+        .module-header {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .module-number {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .module-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .module-desc {
+            font-size: 14px;
+            color: var(--gray-mid);
+            margin-bottom: 24px;
+            font-style: italic;
+        }
+
+        .module-1 .module-number,
+        .module-1 .module-title { color: var(--module-1); }
+        .module-2 .module-number,
+        .module-2 .module-title { color: var(--module-2); }
+        .module-3 .module-number,
+        .module-3 .module-title { color: var(--module-3); }
+        .module-4 .module-number,
+        .module-4 .module-title { color: var(--module-4); }
+        .module-project .module-number,
+        .module-project .module-title { color: var(--module-project); }
+
+        /* Weeks */
+        .week {
+            padding-left: 24px;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .module-1 .week { border-left: 2px solid var(--module-1); }
+        .module-2 .week { border-left: 2px solid var(--module-2); }
+        .module-3 .week { border-left: 2px solid var(--module-3); }
+        .module-4 .week { border-left: 2px solid var(--module-4); }
+        .module-project .week { border-left: 2px solid var(--module-project); }
+
+        .week-header {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .week-number {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--gray-mid);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .week-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .week-desc {
+            font-size: 14px;
+            color: var(--gray-mid);
+            margin-bottom: 12px;
+        }
+
+        /* Assessment Grid */
+        .assessment-grid {
+            display: grid;
+            gap: 1px;
+            background: var(--gray-light);
+            border: 1px solid var(--gray-light);
+            overflow: hidden;
+            margin-bottom: 32px;
+        }
+
+        .assessment-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            background: var(--white);
+        }
+
+        .assessment-row.header {
+            background: #f5f5f5;
+        }
+
+        .assessment-row > div {
+            padding: 12px 16px;
+            font-size: 14px;
+        }
+
+        .assessment-row .weight {
+            font-weight: 600;
+            text-align: right;
+            min-width: 60px;
+        }
+
+        .assessment-row.header > div {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--gray-mid);
+        }
+
+        /* Rubric Sections */
+        .rubric-section {
+            margin-bottom: 40px;
+        }
+
+        .rubric-header {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .rubric-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .rubric-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .rubric-section.project .rubric-label,
+        .rubric-section.project .rubric-title { color: var(--assess-project); }
+        .rubric-section.sketchbook .rubric-label,
+        .rubric-section.sketchbook .rubric-title { color: var(--assess-sketchbook); }
+
+        .rubric-category {
+            padding-left: 24px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .rubric-section.project .rubric-category { border-left: 2px solid var(--assess-project); }
+        .rubric-section.sketchbook .rubric-category { border-left: 2px solid var(--assess-sketchbook); }
+
+        .rubric-category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+        }
+
+        .rubric-category-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        .rubric-category-pts {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-mid);
+        }
+
+        .rubric-items {
+            list-style: none;
+        }
+
+        .rubric-items li {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 13px;
+            color: var(--gray-dark);
+        }
+
+        .rubric-items li span:last-child {
+            font-weight: 500;
+            color: var(--gray-mid);
+            min-width: 30px;
+            text-align: right;
+        }
+
+        /* Guidelines */
+        .guidelines {
+            display: grid;
+            gap: 16px;
+        }
+
+        .guideline {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 16px;
+            font-size: 14px;
+        }
+
+        .guideline-label {
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        .guideline-text {
+            color: var(--gray-dark);
+        }
+
+        /* Materials */
+        .materials-list {
+            list-style: none;
+        }
+
+        .materials-list li {
+            font-size: 14px;
+            color: var(--gray-dark);
+            margin-bottom: 8px;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .materials-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 4px;
+            height: 4px;
+            background: var(--gray-light);
+            border-radius: 50%;
+        }
+
+        /* Resources */
+        .resources-list {
+            font-size: 13px;
+            color: var(--gray-dark);
+            line-height: 1.8;
+        }
+
+        .resources-list .author {
+            font-weight: 500;
+        }
+
+        .resources-list .title {
+            font-style: italic;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 64px;
+            padding-top: 24px;
+            border-top: 1px solid var(--gray-light);
+            font-size: 12px;
+            color: var(--gray-mid);
+            text-align: center;
+        }
+
+        footer a {
+            color: var(--gray-mid);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .container {
+                padding: 32px 16px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .meta {
+                gap: 16px;
+            }
+
+            .structure-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .guideline {
+                grid-template-columns: 1fr;
+                gap: 4px;
+            }
+        }
+
+        @media print {
+            @page {
+                size: A4;
+                margin: 20mm 18mm 20mm 18mm;
+            }
+
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+
+            body {
+                font-size: 10pt;
+                line-height: 1.5;
+                background: white !important;
+            }
+
+            .container {
+                max-width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+
+            .cover-image {
+                margin: 0 0 12pt 0;
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+
+            .cover-image img {
+                width: 100%;
+                height: auto;
+            }
+
+            .cover-image figcaption {
+                font-size: 7pt;
+                margin-top: 4pt;
+            }
+
+            header {
+                margin-bottom: 24pt;
+                padding-bottom: 12pt;
+                page-break-after: avoid;
+            }
+
+            .course-code {
+                font-size: 9pt;
+            }
+
+            h1 {
+                font-size: 22pt;
+                margin-bottom: 12pt;
+            }
+
+            .meta {
+                gap: 20pt;
+                font-size: 9pt;
+            }
+
+            .meta-label {
+                font-size: 7pt;
+            }
+
+            section {
+                margin-bottom: 20pt;
+            }
+
+            h2 {
+                font-size: 8pt;
+                margin-bottom: 8pt;
+                padding-bottom: 4pt;
+                page-break-after: avoid;
+            }
+
+            p {
+                font-size: 10pt;
+                margin-bottom: 8pt;
+            }
+
+            .outcomes li {
+                font-size: 10pt;
+                margin-bottom: 6pt;
+                padding-left: 20pt;
+            }
+
+            .outcomes li::before {
+                font-size: 8pt;
+            }
+
+            .module {
+                margin-bottom: 16pt;
+            }
+
+            .module-header {
+                break-after: avoid;
+                page-break-after: avoid;
+                margin-bottom: 4pt;
+            }
+
+            .module-number {
+                font-size: 8pt;
+            }
+
+            .module-title {
+                font-size: 14pt;
+            }
+
+            .module-desc {
+                font-size: 9pt;
+                margin-bottom: 10pt;
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+
+            .module-1 .module-number,
+            .module-1 .module-title { color: #8B2635 !important; }
+            .module-2 .module-number,
+            .module-2 .module-title { color: #4A5568 !important; }
+            .module-3 .module-number,
+            .module-3 .module-title { color: #2C7A7B !important; }
+            .module-4 .module-number,
+            .module-4 .module-title { color: #92400E !important; }
+            .module-project .module-number,
+            .module-project .module-title { color: #6B5B4F !important; }
+
+            .module-2 {
+                break-before: page;
+                page-break-before: always;
+            }
+
+            .module-3 {
+                break-before: page;
+                page-break-before: always;
+            }
+
+            .week {
+                padding-left: 12pt;
+                margin-bottom: 12pt;
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            .module-1 .week { border-left: 2pt solid #8B2635 !important; }
+            .module-2 .week { border-left: 2pt solid #4A5568 !important; }
+            .module-3 .week { border-left: 2pt solid #2C7A7B !important; }
+            .module-4 .week { border-left: 2pt solid #92400E !important; }
+            .module-project .week { border-left: 2pt solid #6B5B4F !important; }
+
+            .week-header {
+                margin-bottom: 4pt;
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+
+            .week-number {
+                font-size: 8pt;
+            }
+
+            .week-title {
+                font-size: 11pt;
+            }
+
+            .week-desc {
+                font-size: 9pt;
+                margin-bottom: 6pt;
+            }
+
+            /* Assessment grid print */
+            .assessment-grid {
+                border: 1pt solid #e5e5e5 !important;
+                background: #e5e5e5 !important;
+                margin-bottom: 16pt;
+            }
+
+            .assessment-row {
+                background: white !important;
+            }
+
+            .assessment-row.header {
+                background: #f5f5f5 !important;
+            }
+
+            .assessment-row > div {
+                padding: 8pt 12pt;
+                font-size: 9pt;
+            }
+
+            .assessment-row.header > div {
+                font-size: 7pt;
+            }
+
+            /* Rubric print */
+            .rubric-section {
+                margin-bottom: 20pt;
+            }
+
+            .rubric-header {
+                margin-bottom: 10pt;
+            }
+
+            .rubric-label {
+                font-size: 8pt;
+            }
+
+            .rubric-title {
+                font-size: 13pt;
+            }
+
+            .rubric-section.project .rubric-label,
+            .rubric-section.project .rubric-title { color: #6B5B4F !important; }
+            .rubric-section.sketchbook .rubric-label,
+            .rubric-section.sketchbook .rubric-title { color: #2C7A7B !important; }
+
+            .rubric-category {
+                padding-left: 12pt;
+                margin-bottom: 12pt;
+            }
+
+            .rubric-section.project .rubric-category { border-left: 2pt solid #6B5B4F !important; }
+            .rubric-section.sketchbook .rubric-category { border-left: 2pt solid #2C7A7B !important; }
+
+            .rubric-category-name {
+                font-size: 10pt;
+            }
+
+            .rubric-category-pts {
+                font-size: 9pt;
+            }
+
+            .rubric-items li {
+                font-size: 9pt;
+                padding: 3pt 0;
+            }
+
+            section:has(.assessment-grid) {
+                break-before: page;
+                page-break-before: always;
+            }
+
+            .guidelines {
+                gap: 8pt;
+            }
+
+            .guideline {
+                font-size: 9pt;
+                grid-template-columns: 80pt 1fr;
+                gap: 8pt;
+            }
+
+            footer {
+                margin-top: 24pt;
+                padding-top: 12pt;
+                font-size: 8pt;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="course-code">VA 204</div>
+            <h1>Language of Drawing II</h1>
+            <div class="meta">
+                <div class="meta-item">
+                    <span class="meta-label">Instructor</span>
+                    <span>Kerem Ozan Bayraktar</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Email</span>
+                    <span>keremozan.bayraktar@sabanciuniv.edu</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Schedule</span>
+                    <span>Tue 09:40-11:30 & Thu 14:40-16:30</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Term</span>
+                    <span>Spring 2025-26</span>
+                </div>
+            </div>
+        </header>
+
+        <figure class="cover-image">
+            <img src="image1.png" alt="Marlene Dumas, Chlorosis (Love sick), 1994">
+            <figcaption>Marlene Dumas | Chlorosis (Love sick) (1994)</figcaption>
+        </figure>
+
+        <section>
+            <h2>Course Description</h2>
+            <p>This course investigates drawing as both a technical practice and a process of critical inquiry. You will engage with drawing as a tool for analyzing and reshaping how we perceive objects, spaces, and ideas.</p>
+            <p>Combining observational studies, structured experimentation, and collaborative exercises, the course emphasizes drawing's capacity to construct, deconstruct, and transform visual forms. You will work with diverse materials, scales, and approaches to explore themes of fragmentation, reconstruction, and conceptual development. By the end of the semester, you will produce a body of work that reflects a deliberate and informed engagement with drawing as a dynamic and versatile discipline.</p>
+        </section>
+
+        <section>
+            <h2>Learning Outcomes</h2>
+            <ol class="outcomes">
+                <li>Demonstrate precision and nuance in representing objects, textures, and spatial relationships.</li>
+                <li>Analyze and reinterpret visual forms through processes of deconstruction, abstraction, and transformation.</li>
+                <li>Combine foundational drawing techniques with innovative approaches to create work that is both technically and conceptually rigorous.</li>
+                <li>Create a cohesive body of work that reflects individual artistic concerns, informed by the semester's studies.</li>
+                <li>Communicate the conceptual and technical underpinnings of their work through written and verbal reflections.</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Course Structure</h2>
+            <p>This course treats drawing as a way of thinking and researching. We move from basic observation skills to experimental materials, ending with a personal project. The class is divided into three tracks:</p>
+            <div class="structure-grid">
+                <div class="structure-item">
+                    <h4>Creative Exercises</h4>
+                    <p>Critical thinking, awareness, conceptual development. Short, prompt-based activities designed to trigger ideas, access memory, or analyze personal inputs.</p>
+                </div>
+                <div class="structure-item">
+                    <h4>Technical Exercises</h4>
+                    <p>Motor control and mechanics. Repetitive drills and warm-ups meant to train the hand and eye.</p>
+                </div>
+                <div class="structure-item">
+                    <h4>Studio Workshops</h4>
+                    <p>Methodology and synthesis. Primary instructional sessions where the instructor demonstrates specific techniques.</p>
+                </div>
+                <div class="structure-item">
+                    <h4>Individual Project</h4>
+                    <p>A semester-long inquiry where you define your own creative questions. No fixed format; scope determined by the nature of your investigation.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Schedule</h2>
+
+            <div class="module module-1">
+                <div class="module-header">
+                    <span class="module-number">Module I</span>
+                    <span class="module-title">Observation & Basics</span>
+                </div>
+                <p class="module-desc">Foundational skills in observation, line work, and spatial representation.</p>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 1</span>
+                        <span class="week-title">Mapping and Line</span>
+                    </div>
+                    <p class="week-desc">Diagrammatic logic, line control drills, and cognitive mapping.</p>
+                </div>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 2</span>
+                        <span class="week-title">Memory and Space</span>
+                    </div>
+                    <p class="week-desc">Linear perspective systems, grid construction, and memory-based object reconstruction.</p>
+                </div>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 3</span>
+                        <span class="week-title">Surface and Topography</span>
+                    </div>
+                    <p class="week-desc">Tactile observation, value gradients, and texture rendering.</p>
+                </div>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 4</span>
+                        <span class="week-title">The Body and Structure</span>
+                    </div>
+                    <p class="week-desc">Somatic scanning, gesture drawing, and skeletal analysis.</p>
+                </div>
+            </div>
+
+            <div class="module module-2">
+                <div class="module-header">
+                    <span class="module-number">Module II</span>
+                    <span class="module-title">Materiality</span>
+                </div>
+                <p class="module-desc">Expanding the drawing toolkit through wet media, color, and mixed techniques.</p>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 5</span>
+                        <span class="week-title">Wet Media</span>
+                    </div>
+                    <p class="week-desc">Ink viscosity, automatic marking, and wet-on-wet techniques.</p>
+                </div>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 6</span>
+                        <span class="week-title">Color and Saturation</span>
+                    </div>
+                    <p class="week-desc">Chromatic systems, pigment layering, and optical mixing.</p>
+                </div>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 7</span>
+                        <span class="week-title">The Composite Image</span>
+                    </div>
+                    <p class="week-desc">Spatial interruption, material adhesion, and collage.</p>
+                </div>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 8</span>
+                        <span class="week-title">Audio-Visual Translation</span>
+                    </div>
+                    <p class="week-desc">Sound notation, mark-making inventories, and material illusion.</p>
+                </div>
+            </div>
+
+            <div class="module module-3">
+                <div class="module-header">
+                    <span class="module-number">Module III</span>
+                    <span class="module-title">Context</span>
+                </div>
+                <p class="module-desc">Presentation, professional practice, and critical discourse.</p>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 9</span>
+                        <span class="week-title">Scale and Installation</span>
+                    </div>
+                    <p class="week-desc">Large-scale armature construction and site-specific drafting.</p>
+                </div>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 10</span>
+                        <span class="week-title">Seriality and Iteration</span>
+                    </div>
+                    <p class="week-desc">Image transfer techniques and evolutionary iteration of a single concept.</p>
+                </div>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 11</span>
+                        <span class="week-title">Presentation</span>
+                    </div>
+                    <p class="week-desc">Archival standards, matting, and cutting techniques.</p>
+                </div>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 12</span>
+                        <span class="week-title">Discourse</span>
+                    </div>
+                    <p class="week-desc">Peer critique and drafting the artist statement.</p>
+                </div>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 13</span>
+                        <span class="week-title">Documentation</span>
+                    </div>
+                    <p class="week-desc">Lighting, photography of work, and exhibition layout.</p>
+                </div>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 14</span>
+                        <span class="week-title">Final Exhibition</span>
+                    </div>
+                    <p class="week-desc">Final presentation and critique.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Assessment</h2>
+
+            <div class="assessment-grid">
+                <div class="assessment-row header">
+                    <div>Component</div>
+                    <div class="weight">Weight</div>
+                </div>
+                <div class="assessment-row">
+                    <div>Individual Project</div>
+                    <div class="weight">20%</div>
+                </div>
+                <div class="assessment-row">
+                    <div>Attendance</div>
+                    <div class="weight">20%</div>
+                </div>
+                <div class="assessment-row">
+                    <div>Sketchbook</div>
+                    <div class="weight">20%</div>
+                </div>
+                <div class="assessment-row">
+                    <div>Studio Citizenship</div>
+                    <div class="weight">20%</div>
+                </div>
+                <div class="assessment-row">
+                    <div>Assignments</div>
+                    <div class="weight">20%</div>
+                </div>
+            </div>
+
+            <div class="rubric-section project">
+                <div class="rubric-header">
+                    <span class="rubric-label">Rubric</span>
+                    <span class="rubric-title">Individual Project</span>
+                </div>
+
+                <div class="rubric-category">
+                    <div class="rubric-category-header">
+                        <span class="rubric-category-name">Concept & Inquiry</span>
+                        <span class="rubric-category-pts">25 pts</span>
+                    </div>
+                    <ul class="rubric-items">
+                        <li><span>Idea develops through several stages</span><span>10</span></li>
+                        <li><span>Idea is personal</span><span>5</span></li>
+                        <li><span>Idea is researched</span><span>5</span></li>
+                        <li><span>Initial idea is questioned and improved</span><span>5</span></li>
+                    </ul>
+                </div>
+
+                <div class="rubric-category">
+                    <div class="rubric-category-header">
+                        <span class="rubric-category-name">Risk-Taking & Process</span>
+                        <span class="rubric-category-pts">20 pts</span>
+                    </div>
+                    <ul class="rubric-items">
+                        <li><span>Willing to step outside the comfort zone</span><span>5</span></li>
+                        <li><span>Shows strong experimentation</span><span>10</span></li>
+                        <li><span>Continues working despite failures</span><span>5</span></li>
+                    </ul>
+                </div>
+
+                <div class="rubric-category">
+                    <div class="rubric-category-header">
+                        <span class="rubric-category-name">Technical Growth</span>
+                        <span class="rubric-category-pts">25 pts</span>
+                    </div>
+                    <ul class="rubric-items">
+                        <li><span>Clear progress beyond initial skill level</span><span>10</span></li>
+                        <li><span>Demonstrates intentional control of the medium</span><span>5</span></li>
+                        <li><span>A major leap in technical ability</span><span>5</span></li>
+                        <li><span>Uses materials in inventive ways</span><span>5</span></li>
+                    </ul>
+                </div>
+
+                <div class="rubric-category">
+                    <div class="rubric-category-header">
+                        <span class="rubric-category-name">Critical Reflection</span>
+                        <span class="rubric-category-pts">15 pts</span>
+                    </div>
+                    <ul class="rubric-items">
+                        <li><span>Analyzes process using course vocabulary</span><span>5</span></li>
+                        <li><span>Connects work to broader contexts</span><span>5</span></li>
+                        <li><span>Critique is self-aware and honest</span><span>5</span></li>
+                    </ul>
+                </div>
+
+                <div class="rubric-category">
+                    <div class="rubric-category-header">
+                        <span class="rubric-category-name">Presentation & Documentation</span>
+                        <span class="rubric-category-pts">15 pts</span>
+                    </div>
+                    <ul class="rubric-items">
+                        <li><span>Work is displayed with care</span><span>5</span></li>
+                        <li><span>Presentation strengthens the idea</span><span>5</span></li>
+                        <li><span>Digital files are clear and organized</span><span>5</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="rubric-section sketchbook">
+                <div class="rubric-header">
+                    <span class="rubric-label">Rubric</span>
+                    <span class="rubric-title">Sketchbook</span>
+                </div>
+
+                <div class="rubric-category">
+                    <div class="rubric-category-header">
+                        <span class="rubric-category-name">Volume & Consistency</span>
+                        <span class="rubric-category-pts">50 pts</span>
+                    </div>
+                    <ul class="rubric-items">
+                        <li><span>Consistent effort and high volume</span><span>20</span></li>
+                        <li><span>Evidence of regular practice</span><span>30</span></li>
+                    </ul>
+                </div>
+
+                <div class="rubric-category">
+                    <div class="rubric-category-header">
+                        <span class="rubric-category-name">Exploration & Range</span>
+                        <span class="rubric-category-pts">30 pts</span>
+                    </div>
+                    <ul class="rubric-items">
+                        <li><span>Variety of entries (sketches, mind maps, notes, swatches, iterations)</span><span>30</span></li>
+                    </ul>
+                </div>
+
+                <div class="rubric-category">
+                    <div class="rubric-category-header">
+                        <span class="rubric-category-name">Metacognition & Research</span>
+                        <span class="rubric-category-pts">20 pts</span>
+                    </div>
+                    <ul class="rubric-items">
+                        <li><span>Reflection on process (what worked, what failed)</span><span>15</span></li>
+                        <li><span>Visual research with explanatory notes</span><span>5</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Studio Citizenship</h2>
+            <p>The studio is a shared professional environment reflecting your contribution to maintenance, safety, and intellectual atmosphere.</p>
+            <div class="guidelines">
+                <div class="guideline">
+                    <span class="guideline-label">Preparation</span>
+                    <span class="guideline-text">Arrive on time with all necessary materials prepared. Failure to bring tools or paper prevents participation and disrupts the group workflow.</span>
+                </div>
+                <div class="guideline">
+                    <span class="guideline-label">Maintenance</span>
+                    <span class="guideline-text">Clean surfaces, properly store communal equipment, and manage waste. Leaving a mess for others is a failure of professional standards.</span>
+                </div>
+                <div class="guideline">
+                    <span class="guideline-label">Contribution</span>
+                    <span class="guideline-text">Active participation in critiques and discussions is mandatory. Offer honest, constructive feedback to peers and engage seriously with others' work.</span>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Course Policies</h2>
+            <div class="guidelines">
+                <div class="guideline">
+                    <span class="guideline-label">Attendance</span>
+                    <span class="guideline-text">You may miss up to two classes. For any missed class, submit a drawing reflecting the session's focus. Additional absences impact participation unless documented emergencies are communicated.</span>
+                </div>
+                <div class="guideline">
+                    <span class="guideline-label">Punctuality</span>
+                    <span class="guideline-text">Arrive on time. Late arrivals will be noted and may affect participation grade.</span>
+                </div>
+                <div class="guideline">
+                    <span class="guideline-label">Preparation</span>
+                    <span class="guideline-text">Come to class with all required materials ready. Being unprepared impacts performance and participation.</span>
+                </div>
+                <div class="guideline">
+                    <span class="guideline-label">Accountability</span>
+                    <span class="guideline-text">Take responsibility for your work and studio habits. Manage your materials, respect deadlines, and maintain focus during class.</span>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Feedback & Support</h2>
+            <div class="guidelines">
+                <div class="guideline">
+                    <span class="guideline-label">Scheduled</span>
+                    <span class="guideline-text">Formal feedback during critiques and one-on-one project discussions throughout the course.</span>
+                </div>
+                <div class="guideline">
+                    <span class="guideline-label">Office Hours</span>
+                    <span class="guideline-text">Calendar link provided for appointments. Schedule a meeting for detailed feedback on your work.</span>
+                </div>
+                <div class="guideline">
+                    <span class="guideline-label">Informal</span>
+                    <span class="guideline-text">Approach me or TAs during breaks or after class for quick questions or informal input.</span>
+                </div>
+                <div class="guideline">
+                    <span class="guideline-label">Peer</span>
+                    <span class="guideline-text">Take advantage of peer critiques and discussions for diverse perspectives.</span>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Materials</h2>
+            <ul class="materials-list">
+                <li><strong>Drawing Tools:</strong> Pencils (HB to 8B), charcoal sticks, compressed charcoal, erasers (kneaded and standard), pencil sharpener</li>
+                <li><strong>Inks & Wet Media:</strong> Black and colored inks, brushes of varying sizes, small water container</li>
+                <li><strong>Surfaces:</strong> Drawing papers in 35x50 cm and 50x70 cm (required every lesson); 70x100 cm sheets for certain sessions; textured paper, cardboard, or acetate as needed</li>
+                <li><strong>Rulers & Grids:</strong> Ruler (30 cm or longer), acetate sheets for grid-making</li>
+                <li><strong>Additional:</strong> Scissors, craft knives, adhesive (glue or tape), folder for transporting work</li>
+                <li><strong>Optional:</strong> Colored pencils, pastels, markers for individual projects</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Course Resources</h2>
+            <p class="resources-list">
+                <span class="author">Anania, Katie.</span> <span class="title">Out of Paper: Drawing, Environment, and the Body in 1960s America.</span> Yale University Press, 2024.<br>
+                <span class="author">Anderson-Tempini, Gemma.</span> <span class="title">Drawing as a Way of Knowing in Art and Science.</span> Intellect Books, 2017.<br>
+                <span class="author">Arnheim, Rudolf.</span> <span class="title">Art and Visual Perception: A Psychology of the Creative Eye.</span> Univ of California Press, 1954.<br>
+                <span class="author">Botz-Bornstein, Thorsten.</span> <span class="title">The Philosophy of Lines: From Art Nouveau to Cyberspace.</span> Springer Nature, 2021.<br>
+                <span class="author">Butler, Cornelia H.</span> <span class="title">Afterimage: Drawing Through Process.</span> MIT Press, 1999.<br>
+                <span class="author">Chorpening, Kelly, and Rebecca Fortnum.</span> <span class="title">A Companion to Contemporary Drawing.</span> Wiley-Blackwell, 2020.<br>
+                <span class="author">Crary, Jonathan.</span> <span class="title">Techniques of the Observer.</span> MIT Press, 1990.<br>
+                <span class="author">Elkins, James.</span> <span class="title">The Poetics of Perspective.</span> Cornell University Press, 1994.<br>
+                <span class="author">Garner, Steve.</span> <span class="title">Writing on Drawing: Essays on Drawing Practice and Research.</span> Intellect, 2008.<br>
+                <span class="author">Ingold, Tim.</span> <span class="title">Lines: A Brief History.</span> Routledge, 2016.<br>
+                <span class="author">Kantrowitz, Andrea.</span> <span class="title">Drawing Thought: How Drawing Helps Us Observe, Discover, and Invent.</span> MIT Press, 2022.<br>
+                <span class="author">Kentridge, William.</span> <span class="title">Six Drawing Lessons.</span> Harvard University Press, 2014.<br>
+                <span class="author">Nancy, Jean-Luc.</span> <span class="title">The Pleasure in Drawing.</span> Fordham University Press, 2013.<br>
+                <span class="author">Panofsky, Erwin.</span> <span class="title">Perspective as Symbolic Form.</span> Princeton University Press, 2020.<br>
+                <span class="author">Rawson, Philip.</span> <span class="title">Drawing.</span> University of Pennsylvania Press, 2016.<br>
+                <span class="author">Ruskin, John.</span> <span class="title">The Elements of Drawing.</span> Courier Corporation, 1971.<br>
+                <span class="author">Seligman, Isabel, and Hugo Chapman.</span> <span class="title">Pushing Paper: Contemporary Drawing from 1970 to Now.</span> Thames & Hudson, 2019.
+            </p>
+        </section>
+
+        <footer>
+            Sabanci University · Visual Arts and Visual Communication Design<br>
+            <a href="https://keremozan.github.io/notes/courses/2025-26/spring/va204/">View online</a>
+        </footer>
+    </div>
+</body>
+</html>
