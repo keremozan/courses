@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VA315/515 - Visual Culture</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #1a1a1a;
+            --gray-dark: #4a4a4a;
+            --gray-mid: #6b6b6b;
+            --gray-light: #e5e5e5;
+            --white: #fafafa;
+            --module-1: #8B2635;
+            --module-2: #4A5568;
+            --module-3: #2C7A7B;
+            --module-project: #6B5B4F;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--black);
+            background: var(--white);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 64px 24px;
+        }
+
+        /* Cover Image */
+        .cover-image {
+            margin: 0 0 24px 0;
+        }
+
+        .cover-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .cover-image figcaption {
+            font-size: 10px;
+            color: var(--gray-mid);
+            text-align: right;
+            margin-top: 6px;
+            letter-spacing: 0.02em;
+        }
+
+        /* Header */
+        header {
+            margin-bottom: 24px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .course-code {
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            color: var(--gray-mid);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 24px;
+        }
+
+        .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+            font-size: 14px;
+            color: var(--gray-dark);
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .meta-label {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--gray-mid);
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 56px;
+        }
+
+        h2 {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gray-mid);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-dark);
+        }
+
+        /* Learning Outcomes */
+        .outcomes {
+            list-style: none;
+            counter-reset: outcome;
+        }
+
+        .outcomes li {
+            counter-increment: outcome;
+            padding-left: 32px;
+            position: relative;
+            margin-bottom: 12px;
+            color: var(--gray-dark);
+        }
+
+        .outcomes li::before {
+            content: counter(outcome);
+            position: absolute;
+            left: 0;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-mid);
+            width: 20px;
+            text-align: right;
+        }
+
+        /* Rhythm */
+        .rhythm-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        .rhythm-item {
+            padding: 16px;
+            background: #f5f5f5;
+            border-radius: 4px;
+        }
+
+        .rhythm-item h4 {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .rhythm-item p {
+            font-size: 13px;
+            margin-bottom: 0;
+        }
+
+        /* Modules */
+        .module {
+            margin-bottom: 48px;
+        }
+
+        .module-header {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .module-number {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .module-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .module-desc {
+            font-size: 14px;
+            color: var(--gray-mid);
+            margin-bottom: 24px;
+            font-style: italic;
+        }
+
+        .module-1 .module-number,
+        .module-1 .module-title { color: var(--module-1); }
+        .module-2 .module-number,
+        .module-2 .module-title { color: var(--module-2); }
+        .module-3 .module-number,
+        .module-3 .module-title { color: var(--module-3); }
+        .module-project .module-number,
+        .module-project .module-title { color: var(--module-project); }
+
+        /* Weeks */
+        .week {
+            padding-left: 24px;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .module-1 .week { border-left: 2px solid var(--module-1); }
+        .module-2 .week { border-left: 2px solid var(--module-2); }
+        .module-3 .week { border-left: 2px solid var(--module-3); }
+        .module-project .week { border-left: 2px solid var(--module-project); }
+
+        .week-header {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .week-number {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--gray-mid);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .week-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .week-desc {
+            font-size: 14px;
+            color: var(--gray-mid);
+            margin-bottom: 12px;
+        }
+
+        .readings-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--gray-mid);
+            margin-bottom: 8px;
+        }
+
+        .readings {
+            list-style: none;
+        }
+
+        .readings li {
+            font-size: 13px;
+            color: var(--gray-dark);
+            margin-bottom: 8px;
+            padding-left: 12px;
+            position: relative;
+        }
+
+        .readings li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 4px;
+            height: 4px;
+            background: var(--gray-light);
+            border-radius: 50%;
+        }
+
+        .readings .author {
+            font-weight: 500;
+        }
+
+        .readings .title {
+            font-style: italic;
+        }
+
+        /* Assessment */
+        .assessment-grid {
+            display: grid;
+            gap: 1px;
+            background: var(--gray-light);
+            border: 1px solid var(--gray-light);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .assessment-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            background: var(--white);
+        }
+
+        .assessment-row.header {
+            background: #f5f5f5;
+        }
+
+        .assessment-row > div {
+            padding: 12px 16px;
+            font-size: 14px;
+        }
+
+        .assessment-row .weight {
+            font-weight: 600;
+            text-align: right;
+            min-width: 60px;
+        }
+
+        .assessment-row.header > div {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--gray-mid);
+        }
+
+        /* Guidelines */
+        .guidelines {
+            display: grid;
+            gap: 16px;
+        }
+
+        .guideline {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 16px;
+            font-size: 14px;
+        }
+
+        .guideline-label {
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        .guideline-text {
+            color: var(--gray-dark);
+        }
+
+        /* AI Policy */
+        .policy-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        .policy-box {
+            padding: 16px;
+            border-radius: 4px;
+        }
+
+        .policy-box.permitted {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+        }
+
+        .policy-box.prohibited {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+        }
+
+        .policy-box h4 {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+        }
+
+        .policy-box.permitted h4 { color: #166534; }
+        .policy-box.prohibited h4 { color: #991b1b; }
+
+        .policy-box ul {
+            list-style: none;
+            font-size: 13px;
+        }
+
+        .policy-box li {
+            margin-bottom: 4px;
+            color: var(--gray-dark);
+        }
+
+        /* Media */
+        .media-section {
+            margin-bottom: 24px;
+        }
+
+        .media-section h4 {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--black);
+        }
+
+        .media-list {
+            font-size: 13px;
+            color: var(--gray-dark);
+            line-height: 1.8;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 64px;
+            padding-top: 24px;
+            border-top: 1px solid var(--gray-light);
+            font-size: 12px;
+            color: var(--gray-mid);
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .container {
+                padding: 32px 16px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .meta {
+                gap: 16px;
+            }
+
+            .rhythm-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .policy-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .guideline {
+                grid-template-columns: 1fr;
+                gap: 4px;
+            }
+        }
+
+        @media print {
+            @page {
+                size: A4;
+                margin: 20mm 18mm 20mm 18mm;
+            }
+
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+
+            body {
+                font-size: 10pt;
+                line-height: 1.5;
+                background: white !important;
+            }
+
+            .container {
+                max-width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+
+            /* Cover Image */
+            .cover-image {
+                margin: 0 0 12pt 0;
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+
+            .cover-image img {
+                width: 100%;
+                height: auto;
+            }
+
+            .cover-image figcaption {
+                font-size: 7pt;
+                margin-top: 4pt;
+            }
+
+            /* Header */
+            header {
+                margin-bottom: 24pt;
+                padding-bottom: 12pt;
+                page-break-after: avoid;
+            }
+
+            .course-code {
+                font-size: 9pt;
+            }
+
+            h1 {
+                font-size: 22pt;
+                margin-bottom: 12pt;
+            }
+
+            .meta {
+                gap: 20pt;
+                font-size: 9pt;
+            }
+
+            .meta-label {
+                font-size: 7pt;
+            }
+
+            /* Sections */
+            section {
+                margin-bottom: 20pt;
+            }
+
+            h2 {
+                font-size: 8pt;
+                margin-bottom: 8pt;
+                padding-bottom: 4pt;
+                page-break-after: avoid;
+            }
+
+            p {
+                font-size: 10pt;
+                margin-bottom: 8pt;
+            }
+
+            /* Learning Outcomes */
+            .outcomes li {
+                font-size: 10pt;
+                margin-bottom: 6pt;
+                padding-left: 20pt;
+            }
+
+            .outcomes li::before {
+                font-size: 8pt;
+            }
+
+            /* Rhythm Grid */
+            .rhythm-grid {
+                display: flex;
+                gap: 12pt;
+                margin-top: 8pt;
+            }
+
+            .rhythm-item {
+                flex: 1;
+                padding: 10pt;
+                background: #f5f5f5 !important;
+            }
+
+            .rhythm-item h4 {
+                font-size: 9pt;
+                margin-bottom: 4pt;
+            }
+
+            .rhythm-item p {
+                font-size: 8pt;
+                margin-bottom: 0;
+            }
+
+            /* Modules */
+            .module {
+                margin-bottom: 16pt;
+            }
+
+            .module-header {
+                break-after: avoid;
+                page-break-after: avoid;
+                margin-bottom: 4pt;
+            }
+
+            .module-desc {
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+
+            .module-number {
+                font-size: 8pt;
+            }
+
+            .module-title {
+                font-size: 14pt;
+            }
+
+            .module-desc {
+                font-size: 9pt;
+                margin-bottom: 10pt;
+            }
+
+            /* Force module colors to print */
+            .module-1 .module-number,
+            .module-1 .module-title { color: #8B2635 !important; }
+            .module-2 .module-number,
+            .module-2 .module-title { color: #4A5568 !important; }
+            .module-3 .module-number,
+            .module-3 .module-title { color: #2C7A7B !important; }
+            .module-project .module-number,
+            .module-project .module-title { color: #6B5B4F !important; }
+
+            /* Strategic page breaks - start major modules on new pages */
+            .module-2 {
+                break-before: page;
+                page-break-before: always;
+            }
+
+            .module-3 {
+                break-before: page;
+                page-break-before: always;
+            }
+
+            /* Weeks */
+            .week {
+                padding-left: 12pt;
+                margin-bottom: 12pt;
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            .module-1 .week { border-left: 2pt solid #8B2635 !important; }
+            .module-2 .week { border-left: 2pt solid #4A5568 !important; }
+            .module-3 .week { border-left: 2pt solid #2C7A7B !important; }
+            .module-project .week { border-left: 2pt solid #6B5B4F !important; }
+
+            .week-header {
+                margin-bottom: 4pt;
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+
+            .readings-label {
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+
+            .week-number {
+                font-size: 8pt;
+            }
+
+            .week-title {
+                font-size: 11pt;
+            }
+
+            .week-desc {
+                font-size: 9pt;
+                margin-bottom: 6pt;
+            }
+
+            .readings-label {
+                font-size: 7pt;
+                margin-bottom: 4pt;
+            }
+
+            .readings li {
+                font-size: 8pt;
+                margin-bottom: 3pt;
+                padding-left: 8pt;
+            }
+
+            .readings li::before {
+                width: 3pt;
+                height: 3pt;
+                top: 5pt;
+                background: #ccc !important;
+            }
+
+            /* Assessment - start on new page */
+            section:has(.assessment-grid) {
+                break-before: page;
+                page-break-before: always;
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            .assessment-grid {
+                border: 1pt solid #e5e5e5 !important;
+                background: #e5e5e5 !important;
+                margin-bottom: 12pt;
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            .assessment-row {
+                background: white !important;
+            }
+
+            .assessment-row.header {
+                background: #f5f5f5 !important;
+            }
+
+            .assessment-row > div {
+                padding: 6pt 10pt;
+                font-size: 9pt;
+            }
+
+            .assessment-row.header > div {
+                font-size: 7pt;
+            }
+
+            /* Guidelines - keep together */
+            section:has(.guidelines) {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            .guidelines {
+                gap: 8pt;
+            }
+
+            .guideline {
+                font-size: 9pt;
+                grid-template-columns: 80pt 1fr;
+                gap: 8pt;
+            }
+
+            /* AI Policy - keep together */
+            section:has(.policy-grid) {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            .policy-grid {
+                display: flex;
+                gap: 12pt;
+                margin-top: 8pt;
+            }
+
+            .policy-box {
+                flex: 1;
+                padding: 10pt;
+            }
+
+            .policy-box.permitted {
+                background: #f0fdf4 !important;
+                border: 1pt solid #bbf7d0 !important;
+            }
+
+            .policy-box.prohibited {
+                background: #fef2f2 !important;
+                border: 1pt solid #fecaca !important;
+            }
+
+            .policy-box h4 {
+                font-size: 8pt;
+                margin-bottom: 6pt;
+            }
+
+            .policy-box.permitted h4 { color: #166534 !important; }
+            .policy-box.prohibited h4 { color: #991b1b !important; }
+
+            .policy-box li {
+                font-size: 8pt;
+                margin-bottom: 2pt;
+            }
+
+            /* Media - can break but keep headings with content */
+            .media-section {
+                margin-bottom: 10pt;
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            .media-section h4 {
+                font-size: 9pt;
+                margin-bottom: 4pt;
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+
+            .media-list {
+                font-size: 8pt;
+                line-height: 1.6;
+            }
+
+            /* Footer */
+            footer {
+                margin-top: 24pt;
+                padding-top: 12pt;
+                font-size: 8pt;
+            }
+
+            /* Page break helpers */
+            section:has(.module) {
+                page-break-before: auto;
+            }
+
+            .module + .module {
+                page-break-before: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="course-code">VA315/515</div>
+            <h1>Visual Culture</h1>
+            <div class="meta">
+                <div class="meta-item">
+                    <span class="meta-label">Instructor</span>
+                    <span>Kerem Ozan Bayraktar</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Email</span>
+                    <span>keremozan.bayraktar@sabanciuniv.edu</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Schedule</span>
+                    <span>Wednesday 13:40–16:30</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Term</span>
+                    <span>Spring 2025–2026</span>
+                </div>
+            </div>
+        </header>
+
+        <figure class="cover-image">
+            <img src="download.png" alt="Pierre Huyghe, Zoodram 4">
+            <figcaption>Pierre Huyghe | Zoodram 4 (2011)</figcaption>
+        </figure>
+
+        <section>
+            <h2>Course Description</h2>
+            <p>Images do more than depict; they shape systems of meaning, power, and perception. This course examines how visual media function within contemporary cultural, technological, and environmental contexts, exploring their roles in producing identities, mediating interactions between human and non-human actors, and representing global phenomena.</p>
+            <p>Drawing on foundational theories and building your own research methods, you will explore the production, circulation, and impact of images across digital and planetary contexts, developing critical skills for analyzing their influence on modern systems and relationships.</p>
+        </section>
+
+        <section>
+            <h2>Learning Outcomes</h2>
+            <ol class="outcomes">
+                <li>Analyze foundational theories and pivotal shifts in visual culture studies.</li>
+                <li>Examine the role of visual media in constructing systems of meaning and power.</li>
+                <li>Investigate the intersections of visuality, identity, technology, and cultural systems through contemporary examples.</li>
+                <li>Synthesize theoretical and practical insights to design methodologies on contemporary visual phenomena, produce projects, and share them in creative formats.</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Weekly Rhythm</h2>
+            <p>Each week (except project module) follows a tripartite structure:</p>
+            <div class="rhythm-grid">
+                <div class="rhythm-item">
+                    <h4>The Lens</h4>
+                    <p>Engagement with a foundational text that provides the conceptual vocabulary.</p>
+                </div>
+                <div class="rhythm-item">
+                    <h4>The Object</h4>
+                    <p>Examination of a specific, contemporary phenomenon.</p>
+                </div>
+                <div class="rhythm-item">
+                    <h4>The Tool</h4>
+                    <p>A practical workshop component where you will experiment with a specific technique.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Schedule</h2>
+
+            <!-- Module I -->
+            <div class="module module-1">
+                <div class="module-header">
+                    <span class="module-number">Module I</span>
+                    <span class="module-title">Agency & Power</span>
+                </div>
+                <p class="module-desc">Establishing the image as an active subject with rights, desires, and power.</p>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 1</span>
+                        <span class="week-title">What Do Pictures Want?</span>
+                    </div>
+                    <p class="week-desc">Inquiry into the "pictorial turn" and the vitalism of images. Moving beyond semiotics to iconology.</p>
+                    <div class="readings-label">Readings</div>
+                    <ul class="readings">
+                        <li><span class="author">Berger, John.</span> 1972. <span class="title">Ways of Seeing.</span> London: Penguin Books. [Chapter 1]</li>
+                        <li><span class="author">Mitchell, W.J.T.</span> 1996. "What Do Pictures 'Really' Want?" <span class="title">October</span> 77: 71-82.</li>
+                    </ul>
+                </div>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 2</span>
+                        <span class="week-title">Visuality and the Police</span>
+                    </div>
+                    <p class="week-desc">Visuality is defined as a tactic of colonial and military ordering. The relationship between the "overview" and authority.</p>
+                    <div class="readings-label">Readings</div>
+                    <ul class="readings">
+                        <li><span class="author">Mirzoeff, Nicholas.</span> 2011. <span class="title">The Right to Look: A Counterhistory of Visuality.</span> Durham: Duke University Press.</li>
+                        <li><span class="author">Foucault, Michel.</span> 1977. <span class="title">Discipline and Punish: The Birth of the Prison.</span> Translated by Alan Sheridan. New York: Pantheon Books. [Part Three, Chapter 3: "Panopticism"]</li>
+                    </ul>
+                </div>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 3</span>
+                        <span class="week-title">The Civil Contract</span>
+                    </div>
+                    <p class="week-desc">The political ontology of photography. The image as a space of relation. The crisis of the "citizen" in digital virality.</p>
+                    <div class="readings-label">Readings</div>
+                    <ul class="readings">
+                        <li><span class="author">Azoulay, Ariella.</span> 2008. <span class="title">The Civil Contract of Photography.</span> New York: Zone Books. [Introduction]</li>
+                        <li><span class="author">Sontag, Susan.</span> 2003. <span class="title">Regarding the Pain of Others.</span> New York: Farrar, Straus and Giroux. [Selections]</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Project Module - Part 1 -->
+            <div class="module module-project">
+                <div class="module-header">
+                    <span class="module-number">Project Module</span>
+                    <span class="module-title">Research Methods</span>
+                </div>
+                <p class="module-desc">Developing your analytical toolkit and methodology.</p>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 4</span>
+                        <span class="week-title">Survey of Visual Methodologies</span>
+                    </div>
+                    <p class="week-desc">Research groups form. A comparative survey of analytical frameworks.</p>
+                    <div class="readings-label">Core Readings</div>
+                    <ul class="readings">
+                        <li><span class="author">Rose, G.</span> 2016. <span class="title">Visual Methodologies: An Introduction to Researching with Visual Materials.</span> [Selections]</li>
+                        <li><span class="author">Woodward, S.</span> 2019. <span class="title">Material Methods: Researching and Thinking with Things.</span> [Selections]</li>
+                    </ul>
+                </div>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 5</span>
+                        <span class="week-title">Crafting Methods</span>
+                    </div>
+                    <p class="week-desc">Non-representational methodologies.</p>
+                    <div class="readings-label">Core Readings</div>
+                    <ul class="readings">
+                        <li><span class="author">Manning, E.</span> 2015. "Against method."</li>
+                        <li><span class="author">Hübner, F.</span> 2019. "Against Method? Common Ground?"</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Module II -->
+            <div class="module module-2">
+                <div class="module-header">
+                    <span class="module-number">Module II</span>
+                    <span class="module-title">Infrastructure & Materiality</span>
+                </div>
+                <p class="module-desc">The "hidden abode" of the image; resolution, file formats, energy, and labor.</p>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 6</span>
+                        <span class="week-title">Circulation Economies</span>
+                    </div>
+                    <p class="week-desc">Resolution as a political quality. The "Poor Image" as the lumpenproletariat of visual culture.</p>
+                    <div class="readings-label">Readings</div>
+                    <ul class="readings">
+                        <li><span class="author">Steyerl, Hito.</span> 2009. "In Defense of the Poor Image." <span class="title">e-flux journal</span> 10 (November).</li>
+                        <li><span class="author">Manovich, Lev.</span> 2001. <span class="title">The Language of New Media.</span> Cambridge, MA: MIT Press. [Selections on compression]</li>
+                    </ul>
+                </div>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 7</span>
+                        <span class="week-title">The Algorithmic Image & Generative AI</span>
+                    </div>
+                    <p class="week-desc">The shift from indexical photography to statistical synthesis. Diffusion models and the "mean image."</p>
+                    <div class="readings-label">Readings</div>
+                    <ul class="readings">
+                        <li><span class="author">Noble, Safiya Umoja.</span> 2018. <span class="title">Algorithms of Oppression: How Search Engines Reinforce Racism.</span> New York: NYU Press. [Chapter on image search]</li>
+                        <li><span class="author">Manovich, Lev.</span> 2020. <span class="title">Cultural Analytics.</span> Cambridge, MA: MIT Press. [Introduction]</li>
+                    </ul>
+                </div>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 8</span>
+                        <span class="week-title">Digital Labor & Content Moderation</span>
+                    </div>
+                    <p class="week-desc">The human cost of the visual feed. Content moderation, clickwork, and e-waste.</p>
+                    <div class="readings-label">Readings</div>
+                    <ul class="readings">
+                        <li><span class="author">Parikka, Jussi.</span> 2015. <span class="title">A Geology of Media.</span> Minneapolis: University of Minnesota Press. [Selections]</li>
+                        <li><span class="author">Roberts, Sarah T.</span> 2019. <span class="title">Behind the Screen: Content Moderation in the Shadows of Social Media.</span> New Haven: Yale University Press. [Selections]</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Project Module - Part 2 -->
+            <div class="module module-project">
+                <div class="module-header">
+                    <span class="module-number">Project Module</span>
+                    <span class="module-title">Methodology Prototype</span>
+                </div>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 9</span>
+                        <span class="week-title">The Methodology Prototype Deliverable</span>
+                    </div>
+                    <p class="week-desc">Research groups present their methodology.</p>
+                </div>
+            </div>
+
+            <!-- Module III -->
+            <div class="module module-3">
+                <div class="module-header">
+                    <span class="module-number">Module III</span>
+                    <span class="module-title">Attention & Machine Vision</span>
+                </div>
+                <p class="module-desc">Images that function autonomously or aggressively; capturing attention or operating machinery.</p>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 10</span>
+                        <span class="week-title">Post-Cinema & The Feed</span>
+                    </div>
+                    <p class="week-desc">The rise of the "flow." Post-cinematic affect and the disintegration of narrative time (TikTok/Reels).</p>
+                    <div class="readings-label">Readings</div>
+                    <ul class="readings">
+                        <li><span class="author">Shaviro, S.</span> 2010. <span class="title">Post-Cinematic Affect.</span> Zer0 Books. [Introduction]</li>
+                        <li><span class="author">Shaviro, Steven.</span> 2016. "Post-continuity: an introduction." 51-64.</li>
+                    </ul>
+                </div>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 11</span>
+                        <span class="week-title">The Attention Economy & Dopamine Culture</span>
+                    </div>
+                    <p class="week-desc">Sludge content, sensory overload, and the weaponization of the nervous system.</p>
+                    <div class="readings-label">Readings</div>
+                    <ul class="readings">
+                        <li><span class="author">Crary, J.</span> 1999. <span class="title">Suspensions of Perception: Attention, Spectacle, and Modern Culture.</span> [Selections]</li>
+                        <li><span class="author">Citton, Y.</span> 2017. <span class="title">The Ecology of Attention.</span></li>
+                    </ul>
+                </div>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 12</span>
+                        <span class="week-title">Machine Vision & Operational Images</span>
+                    </div>
+                    <p class="week-desc">Images made by machines for machines. The separation of "vision" from the "human eye."</p>
+                    <div class="readings-label">Readings</div>
+                    <ul class="readings">
+                        <li><span class="author">Paglen, Trevor.</span> 2014. "Operational Images." <span class="title">e-flux journal</span> 59 (November).</li>
+                        <li><span class="author">Farocki, Harun.</span> 2004. "Phantom Images." <span class="title">Public</span> 29: 12-22.</li>
+                    </ul>
+                </div>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 13</span>
+                        <span class="week-title">Memetics & Viral Warfare</span>
+                    </div>
+                    <p class="week-desc">The meme as the "gene" of visual culture. Context collapse and information warfare.</p>
+                    <div class="readings-label">Readings</div>
+                    <ul class="readings">
+                        <li><span class="author">Shifman, L.</span> 2013. <span class="title">Memes in Digital Culture.</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Project Module - Final -->
+            <div class="module module-project">
+                <div class="module-header">
+                    <span class="module-number">Project Module</span>
+                    <span class="module-title">Student-Led Studios & Presentation</span>
+                </div>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Weeks 13–15</span>
+                        <span class="week-title">Student-Led Studios</span>
+                    </div>
+                    <p class="week-desc">Research groups lead the sessions.</p>
+                </div>
+
+                <div class="week">
+                    <div class="week-header">
+                        <span class="week-number">Week 16</span>
+                        <span class="week-title">Final Presentation</span>
+                    </div>
+                    <p class="week-desc">Final presentation of the Visual Research Processes.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Assessment</h2>
+            <div class="assessment-grid">
+                <div class="assessment-row header">
+                    <div>Component</div>
+                    <div class="weight">Weight</div>
+                </div>
+                <div class="assessment-row">
+                    <div>Group Project</div>
+                    <div class="weight">50%</div>
+                </div>
+                <div class="assessment-row">
+                    <div>Weekly Reflections & Assignments</div>
+                    <div class="weight">30%</div>
+                </div>
+                <div class="assessment-row">
+                    <div>Participation</div>
+                    <div class="weight">20%</div>
+                </div>
+            </div>
+
+            <p><strong>Group Project (50%):</strong> Work in groups to research a specific visual phenomenon. Design methods and develop a creative final project.</p>
+            <p><strong>Weekly Reflections (30%):</strong> 6 creative exercises, once every two weeks. Peer-graded.</p>
+            <p><strong>Participation (20%):</strong> Consistent attendance, preparation, and constructive contributions.</p>
+        </section>
+
+        <section>
+            <h2>Course Guidelines</h2>
+            <div class="guidelines">
+                <div class="guideline">
+                    <span class="guideline-label">Attendance</span>
+                    <span class="guideline-text">Mandatory. Maximum 2 unexcused absences. Arriving more than 5 minutes late counts as an absence.</span>
+                </div>
+                <div class="guideline">
+                    <span class="guideline-label">Assignments</span>
+                    <span class="guideline-text">Submit via SUCourse. Late penalty: 5% per day. Extensions require 48 hours notice.</span>
+                </div>
+                <div class="guideline">
+                    <span class="guideline-label">Academic Integrity</span>
+                    <span class="guideline-text">Plagiarism results in disciplinary action. All work must be original.</span>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>AI Tools Policy</h2>
+            <div class="policy-grid">
+                <div class="policy-box permitted">
+                    <h4>Permitted</h4>
+                    <ul>
+                        <li>Brainstorming</li>
+                        <li>Studying concepts</li>
+                        <li>Practice quizzes</li>
+                    </ul>
+                </div>
+                <div class="policy-box prohibited">
+                    <h4>Prohibited</h4>
+                    <ul>
+                        <li>Writing/editing assignments</li>
+                        <li>Structuring arguments</li>
+                        <li>Producing analysis</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Course Media</h2>
+
+            <div class="media-section">
+                <h4>Films & Documentaries</h4>
+                <p class="media-list">The Truman Show (1998), Her (2013), Images of the World (1989), All Light, Everywhere (2021), Lo and Behold (2016), The Great Hack (2019), Grace Jones: Bloodlight and Bami (2017), Southland Tales (2006), Melancholia (2011), Gravity (2013), Gamer (2009), The Day After Tomorrow (2004), 2012 (2009), World War Z (2013), Powers of Ten (1977), Man with a Movie Camera (1929), The Gleaners and I (2000), In the Mood for Love (2000), We Live in Public (2009), Leviathan (2012), Anthropocene (2018), HyperNormalisation (2016), The Conversation (1974)</p>
+            </div>
+
+            <div class="media-section">
+                <h4>Music Videos</h4>
+                <p class="media-list">Grace Jones – Corporate Cannibal, Björk – All Is Full of Love, FKA twigs – Cellophane, Childish Gambino – This Is America, ANOHNI – Drone Bomb Me</p>
+            </div>
+
+            <div class="media-section">
+                <h4>Short & Experimental</h4>
+                <p class="media-list">A Demonstration (2020), The Treachery of Sanctuary (2012), Sans Soleil (1983), La Région Centrale (1971), The Old Place (2001), Ten Skies (2004), The Pearl Button (2015), Are You the Favorite Person of Anybody? (2005)</p>
+            </div>
+
+            <div class="media-section">
+                <h4>Installations & Art</h4>
+                <p class="media-list">Harun Farocki – Eye/Machine, Hito Steyerl – How Not to Be Seen, James Bridle – Autonomous Trap 001, Lawrence Abu Hamdan – Saydnaya, Trevor Paglen – It Began as a Military Experiment, Edward Burtynsky – Anthropocene, Olafur Eliasson – Ice Watch, Amalia Ulman – Excellences & Perfections</p>
+            </div>
+
+            <div class="media-section">
+                <h4>Video Games</h4>
+                <p class="media-list">The Stanley Parable, Death Stranding, Papers, Please, Everything</p>
+            </div>
+        </section>
+
+        <footer>
+            Sabanci University · Visual Arts and Visual Communication Design
+        </footer>
+    </div>
+</body>
+</html>
